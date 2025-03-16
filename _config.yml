@@ -4,12 +4,12 @@
 
 # Site
 title: Martin's Space
-subtitle: 'A geek is also a accountant. Martin William'
-description: ''
-keywords:
+subtitle: A geek is also an accountant.
+description: 
+keywords: Python, C++, CPA, CTA, ACCA, deeplearning
 author: Martin William
-language: cn
-timezone: ''
+language: en
+timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
@@ -96,7 +96,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
@@ -104,3 +104,9 @@ deploy:
   type: git
   repo: git@github.com:geek-martin/geek-martin.github.io.git
   branch: master
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
