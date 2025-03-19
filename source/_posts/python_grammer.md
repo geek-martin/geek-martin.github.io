@@ -90,8 +90,8 @@ list1.remove(key) #删除列表中值为key的元素，也可继续使用它的�
 ### 列表排序
 ```python
 list1.sort() # 永久顺序排序
-list1.sort(reverse = true) # 永久倒序排序
-list1.sorted() # 临时顺序排序
+list1.sort(reverse = True) # 永久倒序排序
+sorted(list1, reverse = True) # 临时倒序排序
 ```
 ## 数值列表
 range()
@@ -110,7 +110,10 @@ print(list) # [1, 2, 3, 4]
 even_numbers = list(range(2,11,2))
 print(even_numbers) # [2, 4, 6, 8, 10]
 ```
-
+## 确定列表的长度
+```python
+len(list)
+```
 # 字典
 ## 遍历字典
 ```python
