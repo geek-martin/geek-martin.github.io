@@ -190,94 +190,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/19/linear_pra/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Martin William">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Martin's Space">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/19/linear_pra/" class="post-title-link" itemprop="url">深度学习系列之线性回归practice</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2025-03-19 00:00:00" itemprop="dateCreated datePublished" datetime="2025-03-19T00:00:00+08:00">2025-03-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-03-20 00:08:50" itemprop="dateModified" datetime="2025-03-20T00:08:50+08:00">2025-03-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">李哥考研复试项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h1>
-<p>定义了一个create_data函数，用于生成数据。</p>
-<p>[torch.normal].(<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.normal.html">https://pytorch.org/docs/stable/generated/torch.normal.html</a>)</p>
-<p>torch.matmul: Matrix product of two tensors.</p>
-<p>x : 以0为均值，1为标准差，【(data_num)*(w长度)】的tensor数据<br>y : x*w + b 并在此基础上附加了noise扰动</p>
-<p>![[Pasted image 20250319232552.png]]</p>
-
-<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br>![[Pasted image 20250319234616.png]]</p>
-<p>跳过函数定义看代码主体部分：<br><br>lr: 超参数，学习率<br>w_0, b_0：初始值<br>    requires_grad = True：A tensor can be created with requires_grad=True so that torch.autograd records operations on them for automatic differentiation.<br>    Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
-
-<p>data_provider()函数：<br></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/17/python_grammer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -535,7 +447,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

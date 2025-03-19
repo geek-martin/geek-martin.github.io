@@ -15,30 +15,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>深度学习系列之线性回归practice</title>
-    <url>/2025/03/19/linear_pra/</url>
-    <content><![CDATA[<h1 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h1>
-<p>定义了一个create_data函数，用于生成数据。</p>
-<p>[torch.normal].(<a href="https://pytorch.org/docs/stable/generated/torch.normal.html">https://pytorch.org/docs/stable/generated/torch.normal.html</a>)</p>
-<p>torch.matmul: Matrix product of two tensors.</p>
-<p>x : 以0为均值，1为标准差，【(data_num)*(w长度)】的tensor数据<br>y : x*w + b 并在此基础上附加了noise扰动</p>
-<p>![[Pasted image 20250319232552.png]]</p>
-
-<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br>![[Pasted image 20250319234616.png]]</p>
-<p>跳过函数定义看代码主体部分：<br><br>lr: 超参数，学习率<br>w_0, b_0：初始值<br>    requires_grad = True：A tensor can be created with requires_grad=True so that torch.autograd records operations on them for automatic differentiation.<br>    Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
-
-<p>data_provider()函数：<br></p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-        <category>李哥考研复试项目</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>计算机考研复试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python语法基础</title>
     <url>/2025/03/17/python_grammer/</url>
     <content><![CDATA[<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><h2 id="整型-浮点型-字符串"><a href="#整型-浮点型-字符串" class="headerlink" title="整型/浮点型/字符串"></a>整型/浮点型/字符串</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">3</span> <span class="comment">#整型</span></span><br><span class="line">a = <span class="number">3.0</span> <span class="comment">#浮点型</span></span><br><span class="line">name = <span class="string">&quot;martin&quot;</span></span><br></pre></td></tr></table></figure>
