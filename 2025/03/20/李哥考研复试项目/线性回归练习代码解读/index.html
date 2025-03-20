@@ -262,26 +262,22 @@
 
       
         <h1 id="part-1-函数定义-create-data"><a href="#part-1-函数定义-create-data" class="headerlink" title="part.1 函数定义 create_data()"></a>part.1 函数定义 create_data()</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_data</span>(<span class="params">w, b, data_num</span>):</span><br><span class="line">    x = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (data_num, <span class="built_in">len</span>(w)))  </span><br><span class="line">    y = torch.matmul(x, w) + b  </span><br><span class="line">  </span><br><span class="line">    noise = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)  </span><br><span class="line">    y += noise  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> x, y</span><br></pre></td></tr></table></figure>
-
 <p>定义了一个create_data函数，用于生成数据。</p>
 <p>torch.normal: <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.normal.html">docs</a></p>
 <p>torch.matmul: Matrix product of two tensors.</p>
 <p>x : 以0为均值，1为标准差，【(data_num)*(w长度)】的tensor数据<br>y : x*w + b 并在此基础上附加了noise扰动</p>
-<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319232552.png"></p>
+<p><img src="Pastedimage20250319232552.png" alt=""></p>
 <h1 id="part-2-变量赋值"><a href="#part-2-变量赋值" class="headerlink" title="part.2 变量赋值"></a>part.2 变量赋值</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">500</span>  </span><br><span class="line">  </span><br><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  </span><br><span class="line">true_b = torch.tensor(<span class="number">1.1</span>)</span><br><span class="line"></span><br><span class="line">X, Y = create_data(true_w, true_b, num)</span><br></pre></td></tr></table></figure>
-
-<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319234616.png"></p>
-<h1 id="part-3-main函数"><a href="#part-3-main函数" class="headerlink" title="part.3 main函数"></a>part.3 main函数</h1><p>跳过函数定义看代码主体部分：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lr = <span class="number">0.05</span>  </span><br><span class="line">  </span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  </span><br><span class="line">b_0 = torch.tensor(<span class="number">0.01</span>, requires_grad=<span class="literal">True</span>)   </span><br><span class="line">  </span><br><span class="line">epochs = <span class="number">50</span></span><br></pre></td></tr></table></figure>
-
-<p>lr: 超参数，学习率<br>w_0, b_0：初始值<br>	requires_grad &#x3D; True：A tensor can be created with requires_grad&#x3D;True so that torch.autograd records operations on them for automatic differentiation.<br>	Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
+<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br><img src="Pastedimage20250319234616.png" alt=""></p>
+<h1 id="part-3-main函数"><a href="#part-3-main函数" class="headerlink" title="part.3 main函数"></a>part.3 main函数</h1><p>跳过函数定义看代码主体部分：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lr = <span class="number">0.05</span>  </span><br><span class="line">  </span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  </span><br><span class="line">b_0 = torch.tensor(<span class="number">0.01</span>, requires_grad=<span class="literal">True</span>)   </span><br><span class="line">  </span><br><span class="line">epochs = <span class="number">50</span></span><br></pre></td></tr></table></figure></p>
+<p>lr: 超参数，学习率<br>w_0, b_0：初始值<br>    requires_grad = True：A tensor can be created with requires_grad=True so that torch.autograd records operations on them for automatic differentiation.<br>    Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):  </span><br><span class="line">    data_loss = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> batch_x, batch_y <span class="keyword">in</span> data_provider(X, Y, batchsize):  </span><br><span class="line">        pred_y = fun(batch_x, w_0, b_0)  </span><br><span class="line">        loss = maeLoss(pred_y, batch_y)  </span><br><span class="line">        loss.backward()  </span><br><span class="line">        sgd([w_0, b_0], lr)  </span><br><span class="line">        data_loss += loss  </span><br><span class="line">  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;epoch %03d: loss: %.6f&quot;</span>%(epoch, data_loss))  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;真实的函数值是&quot;</span>, true_w, true_b)  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;深度学习得到的函数值是&quot;</span>, w_0, b_0)</span><br></pre></td></tr></table></figure>
 <p>from 66 to 78<br>data_loss变量：统计每一轮深度学习的效果<br>torch.backward():<a href="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/" title="深度学习python库">深度学习python库</a><br>当调用 <code>loss.backward()</code> 时：</p>
 <ul>
 <li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
-<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
+<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量<h1 id="part-4-函数定义"><a href="#part-4-函数定义" class="headerlink" title="part.4 函数定义"></a>part.4 函数定义</h1></li>
 </ul>
-<h1 id="part-4-函数定义"><a href="#part-4-函数定义" class="headerlink" title="part.4 函数定义"></a>part.4 函数定义</h1><h2 id="data-provider-函数"><a href="#data-provider-函数" class="headerlink" title="data_provider()函数"></a>data_provider()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):  </span><br><span class="line">    length = <span class="built_in">len</span>(label)  </span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  </span><br><span class="line">    random.shuffle(indices)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):  </span><br><span class="line">        get_indices = indices[each: each + batchsize]  </span><br><span class="line">        get_data = data[get_indices]  </span><br><span class="line">        get_label = label[get_indices]  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">yield</span> get_data, get_label  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">batchsize = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+<h2 id="data-provider-函数"><a href="#data-provider-函数" class="headerlink" title="data_provider()函数"></a>data_provider()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):  </span><br><span class="line">    length = <span class="built_in">len</span>(label)  </span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  </span><br><span class="line">    random.shuffle(indices)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):  </span><br><span class="line">        get_indices = indices[each: each + batchsize]  </span><br><span class="line">        get_data = data[get_indices]  </span><br><span class="line">        get_label = label[get_indices]  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">yield</span> get_data, get_label  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">batchsize = <span class="number">16</span></span><br></pre></td></tr></table></figure>
 <p>from 26 to 36<br>以下是 <code>data_provider()</code> 函数的逐行代码解读：</p>
 <hr>
 <h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a><strong>函数定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):</span><br></pre></td></tr></table></figure>
@@ -321,10 +317,11 @@
 <ul>
 <li><strong>循环机制</strong>：<ul>
 <li><code>each</code> 从0开始，以 <code>batchsize</code> 为步长递增</li>
-<li>最后一个批次可能小于 <code>batchsize</code>（例如总样本500，batchsize&#x3D;16时，最后一批次有4个样本）</li>
+<li>最后一个批次可能小于 <code>batchsize</code>（例如总样本500，batchsize=16时，最后一批次有4个样本）</li>
 </ul>
 </li>
-<li><strong>可视化</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">batch1: 0-15</span><br><span class="line">batch2: 16-31</span><br><span class="line">...</span><br><span class="line">batch31: 496-500</span><br></pre></td></tr></table></figure></li>
+<li><strong>可视化</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">batch1: 0-15</span><br><span class="line">batch2: 16-31</span><br><span class="line">...</span><br><span class="line">batch31: 496-500</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
 <h4 id="5-获取当前批次索引"><a href="#5-获取当前批次索引" class="headerlink" title="5. 获取当前批次索引"></a><strong>5. 获取当前批次索引</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_indices = indices[each: each + batchsize]  <span class="comment"># 切片获取当前批次索引</span></span><br></pre></td></tr></table></figure>
@@ -354,10 +351,12 @@
 <li>内存效率：适合处理大型数据集</li>
 </ul>
 </li>
-<li><strong>使用场景</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在训练循环中使用</span></span><br><span class="line"><span class="keyword">for</span> batch_data, batch_label <span class="keyword">in</span> data_provider(X, Y, <span class="number">16</span>):</span><br><span class="line">    <span class="comment"># 执行训练步骤</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>使用场景</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在训练循环中使用</span></span><br><span class="line"><span class="keyword">for</span> batch_data, batch_label <span class="keyword">in</span> data_provider(X, Y, <span class="number">16</span>):</span><br><span class="line">    <span class="comment"># 执行训练步骤</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
-<h3 id="关键特性总结"><a href="#关键特性总结" class="headerlink" title="关键特性总结"></a><strong>关键特性总结</strong></h3><table>
+<h3 id="关键特性总结"><a href="#关键特性总结" class="headerlink" title="关键特性总结"></a><strong>关键特性总结</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>特性</th>
@@ -365,7 +364,8 @@
 <th>重要性</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>随机打乱</td>
 <td>每个epoch重新洗牌数据顺序</td>
 <td>防止模型记住样本顺序</td>
@@ -383,17 +383,18 @@
 <tr>
 <td>通用索引机制</td>
 <td>适用于任何支持高级索引的数据结构</td>
-<td>兼容NumPy&#x2F;PyTorch等张量</td>
+<td>兼容NumPy/PyTorch等张量</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="执行流程示意图"><a href="#执行流程示意图" class="headerlink" title="执行流程示意图"></a><strong>执行流程示意图</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">原始数据</span><br><span class="line">  │</span><br><span class="line">  ├─ 创建顺序索引 [0,1,2,...]</span><br><span class="line">  │</span><br><span class="line">  └─ 随机洗牌 → [253,12,487,...]</span><br><span class="line">            │</span><br><span class="line">            ├─ 切片[0:16] → batch1</span><br><span class="line">            ├─ 切片[16:32] → batch2</span><br><span class="line">            │</span><br><span class="line">            └─ ... → 直到遍历所有数据</span><br></pre></td></tr></table></figure>
-
 <p>该函数实现了深度学习训练中最基础且重要的 <strong>随机小批量采样</strong> 功能，是确保模型有效训练的关键组件。</p>
 <h2 id="fun-函数"><a href="#fun-函数" class="headerlink" title="fun()函数"></a>fun()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):  </span><br><span class="line">    pred_y = torch.matmul(x, w) + b  </span><br><span class="line">    <span class="keyword">return</span> pred_y</span><br></pre></td></tr></table></figure>
 <p>根据给定的参数w, b对数据x生成预测值y并返回预测值pred_y</p>
 <h2 id="maeLoss-函数"><a href="#maeLoss-函数" class="headerlink" title="maeLoss()函数"></a>maeLoss()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):  </span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/06ec95ff3c17534440c17f2c5081b49.png"></p>
+<p><img src="06ec95ff3c17534440c17f2c5081b49.png" alt=""></p>
 <h2 id="sgd-函数"><a href="#sgd-函数" class="headerlink" title="sgd()函数"></a>sgd()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">paras, lr</span>):  </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():  </span><br><span class="line">        <span class="keyword">for</span> para <span class="keyword">in</span> paras:  </span><br><span class="line">            para -= para.grad * lr  </span><br><span class="line">            para.grad.zero_()</span><br></pre></td></tr></table></figure>
 <p>以下是 <code>sgd</code> 函数的详细执行过程分析：</p>
 <hr>
@@ -415,7 +416,7 @@
 <hr>
 <h4 id="3-参数值更新"><a href="#3-参数值更新" class="headerlink" title="3. 参数值更新"></a><strong>3. 参数值更新</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">para -= para.grad * lr  <span class="comment"># 等价于 para = para - lr * para.grad</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>数学意义</strong>：执行梯度下降更新<br>$$ \theta_{\text{new}} &#x3D; \theta_{\text{old}} - \eta \cdot \nabla_{\theta}\mathcal{L} $$</li>
+<li><strong>数学意义</strong>：执行梯度下降更新  <script type="math/tex; mode=display">\theta_{\text{new}} = \theta_{\text{old}} - \eta \cdot \nabla_{\theta}\mathcal{L}</script></li>
 <li><strong>实现细节</strong>：<ul>
 <li>原地修改张量的值 (<code>para</code> 是直接操作对象)</li>
 <li>由于在 <code>no_grad()</code> 上下文中，此操作不会影响后续反向传播的计算图</li>
@@ -426,7 +427,7 @@
 <h4 id="4-梯度清零"><a href="#4-梯度清零" class="headerlink" title="4. 梯度清零"></a><strong>4. 梯度清零</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">para.grad.zero_()</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>必要性</strong>：<ul>
-<li>PyTorch 默认会累积梯度（梯度 +&#x3D; 新梯度）</li>
+<li>PyTorch 默认会累积梯度（梯度 += 新梯度）</li>
 <li>必须显式清零，否则下一个 batch 的梯度会与当前梯度错误叠加</li>
 </ul>
 </li>
@@ -434,6 +435,7 @@
 </ul>
 <hr>
 <h3 id="执行时序示例"><a href="#执行时序示例" class="headerlink" title="执行时序示例"></a><strong>执行时序示例</strong></h3><p>假设当前 batch 的梯度已计算完成（<code>loss.backward()</code> 后）：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -443,7 +445,8 @@
 <th>学习率 <code>lr</code></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>初始</td>
 <td>0.5</td>
 <td>2.0</td>
@@ -451,11 +454,13 @@
 </tr>
 <tr>
 <td>更新</td>
-<td>0.5 - 0.05*2.0 &#x3D; 0.4</td>
+<td>0.5 - 0.05*2.0 = 0.4</td>
 <td>2.0 → 0.0 (清零后)</td>
 <td>-</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="与标准实现的差异"><a href="#与标准实现的差异" class="headerlink" title="与标准实现的差异"></a><strong>与标准实现的差异</strong></h3><ol>
 <li><p><strong>手动更新 vs 优化器</strong>：</p>
@@ -480,10 +485,12 @@
 </ul>
 </li>
 <li><p><strong>更复杂的优化器</strong>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加动量（需修改 sgd 函数）</span></span><br><span class="line">velocity = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sgd_momentum</span>(<span class="params">para, lr, momentum=<span class="number">0.9</span></span>):</span><br><span class="line">    velocity = momentum * velocity - lr * para.grad</span><br><span class="line">    para += velocity</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加动量（需修改 sgd 函数）</span></span><br><span class="line">velocity = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sgd_momentum</span>(<span class="params">para, lr, momentum=<span class="number">0.9</span></span>):</span><br><span class="line">    velocity = momentum * velocity - lr * para.grad</span><br><span class="line">    para += velocity</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h3><table>
+<h3 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>操作</th>
@@ -491,7 +498,8 @@
 <th>必要性等级</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>torch.no_grad()</code></td>
 <td>防止参数更新污染计算图</td>
 <td>必要</td>
@@ -506,10 +514,12 @@
 <td>防止梯度跨 batch 累积</td>
 <td>必要</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>通过这种手动实现的 SGD，开发者可以更直观地理解优化器底层的工作原理，但在实际项目中建议使用 PyTorch 内置优化器以获得更好的性能和稳定性。</p>
-<h3 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h3><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png"><br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/0b0fcf44d3b47e8a5e9e12faccd42bc.png"></p>
-<h1 id="深度学习的训练过程"><a href="#深度学习的训练过程" class="headerlink" title="深度学习的训练过程"></a>深度学习的训练过程</h1><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/607dc97725be3eecbb191ed4887eadb.png"></p>
+<h3 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h3><p><img src="5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png" alt=""><br><img src="0b0fcf44d3b47e8a5e9e12faccd42bc.png" alt=""></p>
+<h1 id="深度学习的训练过程"><a href="#深度学习的训练过程" class="headerlink" title="深度学习的训练过程"></a>深度学习的训练过程</h1><p><img src="607dc97725be3eecbb191ed4887eadb.png" alt=""></p>
 
     </div>
 

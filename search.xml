@@ -1,385 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>深度学习python库</title>
-    <url>/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/</url>
-    <content><![CDATA[<h1 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
-<h2 id="变量及基本操作"><a href="#变量及基本操作" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [  </span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],  </span><br><span class="line">    [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>],  </span><br><span class="line">    [<span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>],  </span><br><span class="line">    [<span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>]  </span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">array1 = np.array(list1) <span class="comment"># 将列表转化为矩阵，打印的效果会不一样</span></span><br><span class="line"></span><br><span class="line">array2 = array1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵合并，默认axis = 0, 纵向合并。 axis = 1为横向合并，以此类推</span></span><br><span class="line">array3 = np.concatenate((array1, array2), axis = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="矩阵的切片"><a href="#矩阵的切片" class="headerlink" title="矩阵的切片"></a>矩阵的切片</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(array3[<span class="number">1</span>:<span class="number">3</span>, <span class="number">2</span>:<span class="number">4</span>]) <span class="comment"># 可以在两个维度进行切片</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以跳着切</span></span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(array3[:, list2])</span><br></pre></td></tr></table></figure>
-
-<h1 id="torch"><a href="#torch" class="headerlink" title="torch"></a>torch</h1><h2 id="变量及基本操作-1"><a href="#变量及基本操作-1" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="张量-tensor"><a href="#张量-tensor" class="headerlink" title="张量 tensor"></a>张量 tensor</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor1 = torch.tensor(list1)  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(array1)  </span><br><span class="line"><span class="built_in">print</span>(tensor1)</span><br></pre></td></tr></table></figure>
-<p>输出如下： tensor与array的区别仅在于tensor将array放在了一张张量网上，可以进行梯度计算<br><img src="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/Pastedimage20250319161350.png"></p>
-<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">3.0</span>)</span><br><span class="line">x.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">y = x**<span class="number">2</span></span><br><span class="line">y.backward() <span class="comment"># 2x = 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个变量的梯度会在变量中进行记录，如果对一个变量分别求两次梯度，需进行清零。否则会出现梯度累加，导致计算错误，如本例中不进行清零x的梯度将为6 + 6 = 12</span></span><br><span class="line">x.grad = torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line">y2.backward() <span class="comment">#2x = 6</span></span><br><span class="line"></span><br><span class="line">x.detach() <span class="comment"># 将x在张量网上摘下，不再计算梯度</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="创建张量"><a href="#创建张量" class="headerlink" title="创建张量"></a>创建张量</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor1 = torch.ones((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是1的张量</span></span><br><span class="line">tensor0 = torch.zeros((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是0的张量</span></span><br><span class="line">tensor2 = torch.normal(mean, std, shape) <span class="comment"># 创建一个形状为shape，均值为mean，标准差为std的正态分布的张量</span></span><br><span class="line"><span class="comment"># ep</span></span><br><span class="line">tensor2 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, (<span class="number">3</span>, <span class="number">10</span>, <span class="number">4</span>)) <span class="comment"># 均值为0，标准差为0.01，形状3维10行4列</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="张量求和"><a href="#张量求和" class="headerlink" title="张量求和"></a>张量求和</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sum1 = torch.<span class="built_in">sum</span>(tensor1, dim = <span class="number">0</span> <span class="keyword">or</span> <span class="number">1</span>, keepdim = <span class="literal">True</span>) <span class="comment"># 0按列求和，1按行求和; keepdim保持原shape打印</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="张量形状"><a href="#张量形状" class="headerlink" title="张量形状"></a>张量形状</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor.shape</span><br></pre></td></tr></table></figure>
-
-<h2 id="tensor-backward"><a href="#tensor-backward" class="headerlink" title="tensor.backward()"></a>tensor.backward()</h2><p>在PyTorch中，<code>tensor.backward()</code> 是实现自动微分（Autograd）的核心方法。它的主要作用是计算当前张量相对于某个标量值的梯度，并存储在相应张量的 <code>.grad</code> 属性中。以下是关键要点：</p>
-<ol>
-<li><strong>基本用法</strong>：</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">2</span></span><br><span class="line">y.backward()  <span class="comment"># 计算梯度</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出：tensor(4.)</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><strong>工作原理</strong>：</li>
-</ol>
-<ul>
-<li>构建计算图：所有涉及<code>requires_grad=True</code>张量的运算都会记录在动态计算图中</li>
-<li>反向传播：从调用<code>backward()</code>的张量开始，反向遍历计算图应用链式法则</li>
-<li>梯度累积：结果梯度会累加到叶子节点的<code>.grad</code>属性中</li>
-</ul>
-<ol start="3">
-<li><strong>参数说明</strong>：</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当输出是非标量时需指定梯度权重</span></span><br><span class="line">x = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]))  <span class="comment"># 等效于y.sum().backward()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留计算图结构（用于多次反向传播）</span></span><br><span class="line">loss.backward(retain_graph=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><strong>典型应用场景</strong>：</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 训练循环中的典型用法</span></span><br><span class="line"><span class="keyword">for</span> data, target <span class="keyword">in</span> dataloader:</span><br><span class="line">    optimizer.zero_grad()  <span class="comment"># 清空梯度</span></span><br><span class="line">    output = model(data)</span><br><span class="line">    loss = loss_fn(output, target)</span><br><span class="line">    loss.backward()        <span class="comment"># 计算梯度</span></span><br><span class="line">    optimizer.step()       <span class="comment"># 更新参数</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><ul>
-<li>梯度会自动累积，需手动调用<code>zero_grad()</code>清除</li>
-<li>默认会释放计算图，二次调用<code>backward()</code>需设置<code>retain_graph=True</code></li>
-<li>只能对标量值直接调用<code>backward()</code>，多维张量需提供<code>gradient</code>参数<br>以下是关于PyTorch中<code>tensor.backward()</code>两个关键机制的深入解释：</li>
-</ul>
-<hr>
-<h4 id="1-默认释放计算图与retain-graph-True的作用"><a href="#1-默认释放计算图与retain-graph-True的作用" class="headerlink" title="1. 默认释放计算图与retain_graph=True的作用"></a>1. <strong>默认释放计算图与<code>retain_graph=True</code>的作用</strong></h4><h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>PyTorch的自动微分系统基于动态计算图（Dynamic Computation Graph）。当调用<code>backward()</code>时：</p>
-<ul>
-<li><strong>默认行为</strong>：反向传播完成后，计算图会被<strong>立即释放</strong>以节省内存。</li>
-<li><strong>问题</strong>：如果尝试再次调用<code>backward()</code>，由于计算图已销毁，会抛出<code>RuntimeError</code>。</li>
-</ul>
-<h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次反向传播（正常执行）</span></span><br><span class="line">y.backward()  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor(12.)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二次反向传播（会报错）</span></span><br><span class="line">y.backward()  <span class="comment"># ❌ RuntimeError: Trying to backward through the graph a second time</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>通过<code>retain_graph=True</code>保留计算图：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y.backward(retain_graph=<span class="literal">True</span>)  <span class="comment"># 第一次反向传播保留计算图</span></span><br><span class="line">y.backward()                   <span class="comment"># ✅ 可再次执行</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)                  <span class="comment"># 梯度累积为 12 + 12 = 24</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
-<li><strong>内存开销</strong>：保留计算图会增加内存占用，需谨慎使用</li>
-<li><strong>应用场景</strong>：如GAN需要交替训练生成器和判别器时</li>
-<li><strong>替代方案</strong>：使用<code>torch.autograd.grad()</code>直接计算梯度（不修改<code>.grad</code>属性）</li>
-</ul>
-<hr>
-<h4 id="2-标量限制与gradient参数的作用"><a href="#2-标量限制与gradient参数的作用" class="headerlink" title="2. 标量限制与gradient参数的作用"></a>2. <strong>标量限制与<code>gradient</code>参数的作用</strong></h4><h5 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h5><ul>
-<li><strong>标量限制</strong>：数学上梯度定义为<strong>标量函数对张量的导数</strong>。当输出是非标量时，PyTorch无法确定如何聚合多维输出的梯度。</li>
-<li><strong>gradient参数</strong>：本质是一个权重向量，用于计算<strong>加权和的梯度</strong>（相当于<code>torch.sum(gradient * output)</code>）。</li>
-</ul>
-<h5 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span>  <span class="comment"># y = [2.0, 4.0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 直接调用会报错</span></span><br><span class="line">y.backward()  <span class="comment"># RuntimeError: grad can be implicitly created only for scalar outputs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确方式：提供gradient参数</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([2., 2.]) </span></span><br><span class="line">               <span class="comment"># 计算过程：d(sum(y))/dx = d(2x1 + 2x2)/dx = [2, 2]</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="数学等价性"><a href="#数学等价性" class="headerlink" title="数学等价性"></a>数学等价性</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以下两种写法等价</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">y.<span class="built_in">sum</span>().backward()</span><br></pre></td></tr></table></figure>
-
-<h5 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 自定义权重计算梯度</span></span><br><span class="line">gradient_weights = torch.tensor([<span class="number">0.5</span>, <span class="number">2.0</span>])</span><br><span class="line">y.backward(gradient=gradient_weights)</span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([1., 4.]) </span></span><br><span class="line">               <span class="comment"># 计算：0.5*2 + 2.0*2 = [1, 4]</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h5><ul>
-<li><strong>默认行为</strong>：当输出是标量时，等价于<code>gradient=torch.tensor(1.0)</code></li>
-<li><strong>广播机制</strong>：<code>gradient</code>的形状必须与输出张量形状匹配</li>
-<li><strong>物理意义</strong>：可理解为对多维输出不同通道的梯度重要性加权</li>
-</ul>
-<h3 id="梯度计算解牛"><a href="#梯度计算解牛" class="headerlink" title="梯度计算解牛"></a>梯度计算解牛</h3><h4 id="1-梯度计算的本质"><a href="#1-梯度计算的本质" class="headerlink" title="1. 梯度计算的本质"></a><strong>1. 梯度计算的本质</strong></h4><p>PyTorch的梯度计算本质上是 <strong>逐元素（element-wise）</strong> 进行的。对于任意形状的张量：</p>
-<ul>
-<li>梯度张量与原张量形状 <strong>严格一致</strong></li>
-<li>每个元素的梯度表示 <strong>该元素对最终标量损失值的贡献</strong></li>
-</ul>
-<h5 id="示例代码中的-w-0"><a href="#示例代码中的-w-0" class="headerlink" title="示例代码中的 w_0"></a>示例代码中的 <code>w_0</code></h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  <span class="comment"># 4维向量</span></span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  <span class="comment"># 形状为 (4,)</span></span><br></pre></td></tr></table></figure>
-
-<p>当调用 <code>loss.backward()</code> 时：</p>
-<ul>
-<li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
-<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
-</ul>
-<hr>
-<h4 id="2-计算过程可视化"><a href="#2-计算过程可视化" class="headerlink" title="2. 计算过程可视化"></a><strong>2. 计算过程可视化</strong></h4><p>假设当前 <code>w_0</code> 和梯度如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w_0 = tensor([w1, w2, w3, w4], requires_grad=<span class="literal">True</span>)  <span class="comment"># 实际值可能是 [0.1, -0.2, 0.05, 0.3]</span></span><br><span class="line">grad = tensor([dw1, dw2, dw3, dw4])                <span class="comment"># 例如 [1.2, 0.8, -0.5, 2.1]</span></span><br></pre></td></tr></table></figure>
-
-<p>参数更新操作：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w_0 -= lr * w_0.grad</span><br><span class="line"><span class="comment"># 等价于：</span></span><br><span class="line">w1_new = w1 - lr * dw1</span><br><span class="line">w2_new = w2 - lr * dw2</span><br><span class="line">w3_new = w3 - lr * dw3</span><br><span class="line">w4_new = w4 - lr * dw4</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h4 id="3-数学推导验证"><a href="#3-数学推导验证" class="headerlink" title="3. 数学推导验证"></a><strong>3. 数学推导验证</strong></h4><p>假设模型为：<br>$$<br>\hat{y} &#x3D; X \cdot w + b<br>$$<br>损失函数为MAE：<br>$$<br>\mathcal{L} &#x3D; \frac{1}{N} \sum |\hat{y} - y|<br>$$</p>
-<p>对 $w_j$ 的梯度为：<br>$$<br>\frac{\partial \mathcal{L}}{\partial w_j} &#x3D; \frac{1}{N} \sum \text{sign}(\hat{y}-y) \cdot X_{[:,j]}<br>$$</p>
-<p>PyTorch会自动计算每个 $w_j$ 对应的梯度分量，并拼合成形状为 <code>(4,)</code> 的梯度张量。</p>
-<hr>
-<h4 id="4-代码执行细节验证"><a href="#4-代码执行细节验证" class="headerlink" title="4. 代码执行细节验证"></a><strong>4. 代码执行细节验证</strong></h4><p>在你的代码中：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):</span><br><span class="line">    pred_y = torch.matmul(x, w) + b  <span class="comment"># x形状(batch_size,4), w形状(4,)</span></span><br><span class="line">    <span class="keyword">return</span> pred_y                    <span class="comment"># 输出形状(batch_size,)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):</span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)  <span class="comment"># 输出是标量</span></span><br></pre></td></tr></table></figure>
-
-<p>反向传播时：</p>
-<ol>
-<li><code>loss</code> 是标量（关键！）</li>
-<li>通过链式法则，PyTorch会自动计算标量损失对每个 <code>w_j</code> 的梯度</li>
-<li>所有梯度按原始维度组织，存储在 <code>w_0.grad</code></li>
-</ol>
-<hr>
-<h4 id="5-梯度形状验证实验"><a href="#5-梯度形状验证实验" class="headerlink" title="5. 梯度形状验证实验"></a><strong>5. 梯度形状验证实验</strong></h4><p>可以添加调试代码验证梯度形状：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(w_0.shape)        <span class="comment"># 输出: torch.Size([4])</span></span><br><span class="line"><span class="built_in">print</span>(w_0.grad.shape)   <span class="comment"># 反向传播后会输出: torch.Size([4])</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h4 id="6-与一维情况的对比"><a href="#6-与一维情况的对比" class="headerlink" title="6. 与一维情况的对比"></a><strong>6. 与一维情况的对比</strong></h4><table>
-<thead>
-<tr>
-<th>参数类型</th>
-<th>参数形状</th>
-<th>梯度形状</th>
-<th>更新方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>标量</td>
-<td>()</td>
-<td>()</td>
-<td><code>w -= lr * w.grad</code></td>
-</tr>
-<tr>
-<td>向量</td>
-<td>(4,)</td>
-<td>(4,)</td>
-<td>逐元素更新</td>
-</tr>
-<tr>
-<td>矩阵</td>
-<td>(3,4)</td>
-<td>(3,4)</td>
-<td>每个矩阵元素独立更新</td>
-</tr>
-</tbody></table>
-<hr>
-<h4 id="为什么没有维度冲突？"><a href="#为什么没有维度冲突？" class="headerlink" title="为什么没有维度冲突？"></a><strong>为什么没有维度冲突？</strong></h4><ul>
-<li><strong>关键点</strong>：损失函数最终输出始终是 <strong>标量</strong>（<code>maeLoss</code> 返回的是平均值）</li>
-<li><strong>数学保证</strong>：标量对任意维度张量的导数自然保持与原张量相同的形状</li>
-<li><strong>PyTorch特性</strong>：自动微分系统会处理任意维度的张量梯度计算</li>
-</ul>
-<hr>
-<h4 id="常见误区澄清"><a href="#常见误区澄清" class="headerlink" title="常见误区澄清"></a><strong>常见误区澄清</strong></h4><p>误区：<em>“多维张量需要特殊处理才能计算梯度”</em></p>
-<p>事实：</p>
-<ul>
-<li>只要最终损失是标量，PyTorch可以处理任意维度的参数梯度</li>
-<li>无论参数是标量、向量、矩阵还是高阶张量，梯度计算规则一致</li>
-<li>参数更新时的逐元素操作是自动完成的</li>
-</ul>
-<h1 id="matplotlib-pyplot"><a href="#matplotlib-pyplot" class="headerlink" title="matplotlib.pyplot"></a>matplotlib.pyplot</h1><h2 id="plt-plot"><a href="#plt-plot" class="headerlink" title="plt.plot()"></a>plt.plot()</h2><p>在使用 PyTorch 进行深度学习训练时，如果要将张量数据传递给 <code>matplotlib.pyplot.plot()</code> 进行可视化，通常需要添加 <code>.detach().numpy()</code> 操作。这是由 PyTorch 张量和 Matplotlib 的底层机制差异导致的，具体原因如下：</p>
-<hr>
-<h3 id="1-核心原因：数据格式转换"><a href="#1-核心原因：数据格式转换" class="headerlink" title="1. 核心原因：数据格式转换"></a><strong>1. 核心原因：数据格式转换</strong></h3><table>
-<thead>
-<tr>
-<th>操作步骤</th>
-<th>作用</th>
-<th>必要性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>.detach()</code></td>
-<td>将张量从计算图中分离，得到一个不需要梯度追踪的新张量</td>
-<td>必要</td>
-</tr>
-<tr>
-<td><code>.numpy()</code></td>
-<td>将 PyTorch 张量转换为 NumPy 数组（Matplotlib 只能处理 NumPy 数组或 Python 原生数据类型）</td>
-<td>必要</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="2-分步详解"><a href="#2-分步详解" class="headerlink" title="2. 分步详解"></a><strong>2. 分步详解</strong></h3><h4 id="（1）脱离计算图（-detach-）"><a href="#（1）脱离计算图（-detach-）" class="headerlink" title="（1）脱离计算图（.detach()）"></a><strong>（1）脱离计算图（.detach()）</strong></h4><ul>
-<li><strong>问题背景</strong>：PyTorch 张量可能带有梯度信息（<code>requires_grad=True</code>）</li>
-<li><strong>风险</strong>：如果直接使用带有梯度的张量：<ul>
-<li>会增加不必要的内存占用（保持计算图）</li>
-<li>可能引发意外的梯度传播（尽管绘图操作不需要梯度）</li>
-</ul>
-</li>
-<li><strong>示例对比</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 原始张量（带梯度）</span></span><br><span class="line">tensor_with_grad = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接转换会报错</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    plt.plot(tensor_with_grad)  <span class="comment"># ❌ 报错：Can&#x27;t call numpy() on Tensor that requires grad</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确做法</span></span><br><span class="line">plt.plot(tensor_with_grad.detach().numpy())  <span class="comment"># ✅ 正常工作</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="（2）设备转移（CPU-GPU）"><a href="#（2）设备转移（CPU-GPU）" class="headerlink" title="（2）设备转移（CPU&#x2F;GPU）"></a><strong>（2）设备转移（CPU&#x2F;GPU）</strong></h4><ul>
-<li><strong>问题背景</strong>：如果张量在 GPU 上（<code>device=&#39;cuda&#39;</code>）</li>
-<li><strong>风险</strong>：Matplotlib 无法直接处理 GPU 上的张量</li>
-<li><strong>完整转换流程</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GPU 张量处理流程</span></span><br><span class="line">gpu_tensor = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 错误方式</span></span><br><span class="line">plt.plot(gpu_tensor.cpu().detach().numpy())  <span class="comment"># ❌ 顺序错误，应先 detach</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确方式</span></span><br><span class="line">plt.plot(gpu_tensor.detach().cpu().numpy())  <span class="comment"># ✅ 正确顺序：detach → cpu → numpy</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="（3）数据类型转换"><a href="#（3）数据类型转换" class="headerlink" title="（3）数据类型转换"></a><strong>（3）数据类型转换</strong></h4><table>
-<thead>
-<tr>
-<th>数据类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>PyTorch Tensor</td>
-<td>可以是任意形状和数据类型（float32, int64 等）</td>
-</tr>
-<tr>
-<td>NumPy Array</td>
-<td>Matplotlib 的底层数据容器，与 PyTorch 内存不兼容</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="3-完整转换流程"><a href="#3-完整转换流程" class="headerlink" title="3. 完整转换流程"></a><strong>3. 完整转换流程</strong></h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 假设有一个需要绘制的 PyTorch 张量</span></span><br><span class="line">original_tensor = torch.randn(<span class="number">100</span>, requires_grad=<span class="literal">True</span>, device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安全转换步骤</span></span><br><span class="line">plot_data = original_tensor.detach()  <span class="comment"># 1. 脱离计算图</span></span><br><span class="line">                .cpu()                <span class="comment"># 2. 转移到 CPU（如果是 GPU 张量）</span></span><br><span class="line">                .numpy()              <span class="comment"># 3. 转换为 NumPy 数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图形</span></span><br><span class="line">plt.plot(plot_data)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="4-常见错误场景"><a href="#4-常见错误场景" class="headerlink" title="4. 常见错误场景"></a><strong>4. 常见错误场景</strong></h3><h4 id="场景-1：未分离计算图"><a href="#场景-1：未分离计算图" class="headerlink" title="场景 1：未分离计算图"></a><strong>场景 1：未分离计算图</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.linspace(<span class="number">0</span>, <span class="number">2</span>*np.pi, <span class="number">100</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = torch.sin(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x.numpy(), y.numpy())  <span class="comment"># ❌ RuntimeError: Can&#x27;t call numpy() on Tensor that requires grad</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="场景-2：未处理-GPU-张量"><a href="#场景-2：未处理-GPU-张量" class="headerlink" title="场景 2：未处理 GPU 张量"></a><strong>场景 2：未处理 GPU 张量</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">gpu_data = torch.randn(<span class="number">10</span>).cuda()</span><br><span class="line">plt.plot(gpu_data.detach().numpy())  <span class="comment"># ❌ TypeError: can&#x27;t convert cuda:0 device type tensor to numpy</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="场景-3：错误操作顺序"><a href="#场景-3：错误操作顺序" class="headerlink" title="场景 3：错误操作顺序"></a><strong>场景 3：错误操作顺序</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 先转 NumPy 再 detach 会丢失梯度信息</span></span><br><span class="line">temp = y.numpy()         <span class="comment"># ❌ 错误开始点</span></span><br><span class="line">detached = temp.detach() <span class="comment"># ❌ AttributeError: &#x27;numpy.ndarray&#x27; object has no attribute &#x27;detach&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="5-最佳实践总结"><a href="#5-最佳实践总结" class="headerlink" title="5. 最佳实践总结"></a><strong>5. 最佳实践总结</strong></h3><table>
-<thead>
-<tr>
-<th>操作类型</th>
-<th>推荐写法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CPU + 无梯度</td>
-<td><code>tensor.numpy()</code></td>
-<td>直接转换</td>
-</tr>
-<tr>
-<td>CPU + 有梯度</td>
-<td><code>tensor.detach().numpy()</code></td>
-<td>必须 detach</td>
-</tr>
-<tr>
-<td>GPU + 无梯度</td>
-<td><code>tensor.cpu().numpy()</code></td>
-<td>需要转移到 CPU</td>
-</tr>
-<tr>
-<td>GPU + 有梯度</td>
-<td><code>tensor.detach().cpu().numpy()</code></td>
-<td>完整流程</td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="6-特殊场景处理"><a href="#6-特殊场景处理" class="headerlink" title="6. 特殊场景处理"></a><strong>6. 特殊场景处理</strong></h3><h4 id="保留梯度但需要可视化"><a href="#保留梯度但需要可视化" class="headerlink" title="保留梯度但需要可视化"></a><strong>保留梯度但需要可视化</strong></h4><p>如果需要在可视化后继续梯度计算（罕见需求）：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 with torch.no_grad(): 临时禁用梯度</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    plt.plot(x.cpu().numpy(), y.cpu().numpy())</span><br></pre></td></tr></table></figure>
-
-<h4 id="批量处理张量"><a href="#批量处理张量" class="headerlink" title="批量处理张量"></a><strong>批量处理张量</strong></h4><p>对于高维张量（如神经网络中间层输出）：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 假设 feature_map 是 4D 张量 (batch, channel, height, width)</span></span><br><span class="line">feature_map = model(inputs)</span><br><span class="line">plt.imshow(feature_map[<span class="number">0</span>, <span class="number">0</span>].detach().cpu().numpy())  <span class="comment"># 可视化第一个样本的第一个通道</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p><code>.detach().numpy()</code>（对于 GPU 张量还需 <code>.cpu()</code>）的组合操作是 PyTorch 与 Matplotlib 协作的 <strong>必要桥梁</strong>，其主要作用包括：</p>
-<ol>
-<li><strong>断开梯度传播</strong>：防止可视化操作影响反向传播</li>
-<li><strong>设备转移</strong>：确保数据位于 CPU 内存</li>
-<li><strong>格式转换</strong>：将张量转换为 Matplotlib 可识别的 NumPy 数组</li>
-</ol>
-<p>这种转换虽然增加了代码的复杂度，但能有效避免许多隐蔽的错误，是 PyTorch 可视化过程中必须掌握的关键技巧。</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>python基础</title>
-    <url>/2025/03/17/python/python%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><h2 id="整型-浮点型-字符串"><a href="#整型-浮点型-字符串" class="headerlink" title="整型&#x2F;浮点型&#x2F;字符串"></a>整型&#x2F;浮点型&#x2F;字符串</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">3</span> <span class="comment">#整型</span></span><br><span class="line">a = <span class="number">3.0</span> <span class="comment">#浮点型</span></span><br><span class="line">name = <span class="string">&quot;martin&quot;</span></span><br></pre></td></tr></table></figure>
-<h3 id="使用函数str-避免类型错误"><a href="#使用函数str-避免类型错误" class="headerlink" title="使用函数str()避免类型错误"></a>使用函数str()避免类型错误</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">age = <span class="number">23</span></span><br><span class="line">message = <span class="string">&quot;Happy&quot;</span> + <span class="built_in">str</span>(age) + <span class="string">&quot;rd Birthday!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(message)</span><br></pre></td></tr></table></figure>
-<p>这里，调用函数str()，python将非字符串值表示为字符串</p>
-<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>关键词：list []</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="built_in">print</span>(list1)</span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">2</span>]) <span class="comment"># 3</span></span><br><span class="line"><span class="built_in">print</span>(list1[-<span class="number">1</span>]) <span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
-<p>list[-1]将访问列表最后一个值，-2为倒数第二个值，以此类推。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list2 = [<span class="number">1</span>, <span class="string">&quot;art&quot;</span>, dict1] <span class="comment">#同一个列表中支持多种数据类型</span></span><br></pre></td></tr></table></figure>
-<h2 id="字典（哈希表）"><a href="#字典（哈希表）" class="headerlink" title="字典（哈希表）"></a>字典（哈希表）</h2><p>关键词： dict {key: value}</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;martin&quot;</span>, <span class="string">&quot;age&quot;</span>: <span class="number">18</span>, <span class="number">20</span>: <span class="number">80</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="string">&quot;name&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="string">&quot;age&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="number">20</span>])</span><br></pre></td></tr></table></figure>
-
-<h1 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h1><p><code>//</code> 地板除<br><code>/</code> 普通除<br><code>**</code> 乘方</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">9</span>/<span class="number">2</span>) <span class="comment"># 4.5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">9</span>//<span class="number">2</span>) <span class="comment"># 4</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">9</span>**<span class="number">2</span>) <span class="comment"># 81</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>带初值的函数示例</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func1</span>(<span class="params">a, b = <span class="number">2</span></span>) <span class="comment">#如果传入b，返回a**b；否则，返回a**2</span></span><br><span class="line">	<span class="keyword">return</span> a ** b</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(func1(<span class="number">2</span>)) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="列表-1"><a href="#列表-1" class="headerlink" title="列表"></a>列表</h1><h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:<span class="number">4</span>]) <span class="comment"># [2, 3, 4] 左闭右开</span></span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:-<span class="number">1</span>]) <span class="comment"># [2, 3, 4]</span></span><br><span class="line"><span class="built_in">print</span>(list1[:]) <span class="comment"># [1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:]) <span class="comment"># [2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1.append(<span class="number">6</span>) <span class="comment"># [1, 2, 3, 4, 5, 6] 在末尾添加</span></span><br><span class="line">list1.insert(<span class="number">0</span>, <span class="number">0.5</span>) <span class="comment">#[0.5, 1, 2, 3, 4, 5] 在指定位置添加</span></span><br><span class="line">list1.extend([<span class="number">8</span>, <span class="number">9</span>]) <span class="comment">#在列表末尾一次性追加另一个列表的多个值，即用新列表扩展原来的列表</span></span><br></pre></td></tr></table></figure>
-<h3 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">del</span> list1[<span class="number">0</span>] <span class="comment">#删除索引0处的元素，且不再以任何方式使用它</span></span><br><span class="line">list1.pop(index) <span class="comment">#删除索引index处的元素，但会继续使用它，index为空时默认为-1，即栈顶</span></span><br><span class="line">list1.remove(key) <span class="comment">#删除列表中值为key的元素，也可继续使用它的值；若列表中有多个值为key，remove只删除第一个指定的值</span></span><br></pre></td></tr></table></figure>
-<h3 id="列表排序"><a href="#列表排序" class="headerlink" title="列表排序"></a>列表排序</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1.sort() <span class="comment"># 永久顺序排序</span></span><br><span class="line">list1.sort(reverse = <span class="literal">True</span>) <span class="comment"># 永久倒序排序</span></span><br><span class="line"><span class="built_in">sorted</span>(list1, reverse = <span class="literal">True</span>) <span class="comment"># 临时倒序排序</span></span><br></pre></td></tr></table></figure>
-<h2 id="数值列表"><a href="#数值列表" class="headerlink" title="数值列表"></a>数值列表</h2><p>range()</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>):</span><br><span class="line">	<span class="built_in">print</span>(value)</span><br></pre></td></tr></table></figure>
-<p>将打印数字1 2 3 4. 左闭右开<br>要创建数字列表，可使用函数list()将range()的结果直接转换为列表</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>) <span class="comment"># [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
-<p>函数range()还可指定步长</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">even_numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">2</span>,<span class="number">11</span>,<span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(even_numbers) <span class="comment"># [2, 4, 6, 8, 10]</span></span><br></pre></td></tr></table></figure>
-<h2 id="确定列表的长度"><a href="#确定列表的长度" class="headerlink" title="确定列表的长度"></a>确定列表的长度</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">len</span>(<span class="built_in">list</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h1><h2 id="遍历字典"><a href="#遍历字典" class="headerlink" title="遍历字典"></a>遍历字典</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">favorite_languages = &#123;</span><br><span class="line">	<span class="string">&#x27;jen&#x27;</span>:<span class="string">&#x27;python&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;sarah&#x27;</span>:<span class="string">&#x27;c&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;edward&#x27;</span>:<span class="string">&#x27;ruby&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;phil&#x27;</span>:<span class="string">&#x27;python&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 遍历所有的键值对</span></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> favorite_languages.items()</span><br><span class="line"><span class="comment"># 遍历字典中所有的键</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> favorite_languages.keys()</span><br><span class="line"><span class="comment"># 遍历字典中所有的值</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> favorite_languages.values()</span><br><span class="line"><span class="comment"># 按顺序遍历</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">sorted</span>(favorite_languages.keys())</span><br><span class="line"><span class="comment"># 去重遍历</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> <span class="built_in">set</span>(favorite_languages.values())</span><br></pre></td></tr></table></figure>
-<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><h2 id="类编码风格"><a href="#类编码风格" class="headerlink" title="类编码风格"></a>类编码风格</h2><p>类名应采用驼峰命名法，即将类名中的每个单词的首字母都大写，而不使用下划线。实例名和模块名都采用小写格式，并在单词间加上下划线。<br>对于每个类，都应紧跟在类定义后面包含一个文档字符串。这种文档字符串简要地描述类的功能，并遵循编写函数的文档字符串时采用的格式约定。每个模块也都应包含一个文档字符串，对其中的类可用于做什么进行描述。<br>可使用空行来组织代码，但不要滥用。<strong>在类中，可使用一个空行来分隔方法；而在模块中，可使用两个空行来分隔类。</strong><br>需要同时导入标准库中的模块和你编写的模块时，先编写导入标准库模块的import语句，再添加一个空行，然后编写导入你自己编写模块的import语句。在包含多条import语句的程序中，这种做法让人更容易明白程序使用的各个模块都来自何方。</p>
-<h2 id="创建和使用类"><a href="#创建和使用类" class="headerlink" title="创建和使用类"></a>创建和使用类</h2><h3 id="创建类"><a href="#创建类" class="headerlink" title="创建类"></a>创建类</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化属性name和age&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.name = name</span><br><span class="line">		<span class="variable language_">self</span>.age = age</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">sit</span>(<span class="params">self</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;模拟小狗被命令时蹲下&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="variable language_">self</span>.name.title() + <span class="string">&quot; is now sitting.&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">roll_over</span>(<span class="params">self</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;模拟小狗被命令时打滚&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="variable language_">self</span>.name.title() + <span class="string">&quot; rolled over!&quot;</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>根据约定，在python中，首字母大写的名称指的是类。</li>
-<li>方法__init__()<ul>
-<li>类中的函数称为方法。</li>
-<li>方法__init__()是一个特殊的方法，每当你根据Dog类创建新实例时，python都会自动运行它。在这个方法的名称中，开头和末尾各有两个下划线，这是一种约定，旨在避免python默认方法与普通方法发生名称冲突。</li>
-<li>在这个方法的定义中，形参self必不可少，还必须位于其他形参的前面。因为python在调用这个__init__()方法来创建实例时，将自动传入形参self。每个与类相关联的方法调用都自动传递实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法。本例，我们创建Dog实例时，python将调用Dog类的方法__init__()。我们将通过实参向Dog()传递名字和年龄；self会自动传递，因此我们不需要传递它。每当我们根据Dog类创建实例时，都只需给最后两个形参(name和age)提供值。</li>
-<li>定义的两个变量都有前缀self。以self为前缀的变量都可供类中的所有方法使用，我们还可以通过类的任何实例来访问这些变量。self.name &#x3D; name获取存储在形参name中的值，并将其存储到变量name中，然后该变量被关联到当前创建的实例。self.age &#x3D; age的作用与此类似。像这样可通过实例访问的变量称为属性。</li>
-</ul>
-</li>
-<li>Dog类还定义了另外两个方法：sit()和roll_over()。由于这些方法不需要额外的信息，如名字和年龄，因此它们只有一个形参self。</li>
-</ul>
-<h3 id="根据类创建实例"><a href="#根据类创建实例" class="headerlink" title="根据类创建实例"></a>根据类创建实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建实例 my_dog</span></span><br><span class="line">my_dog = Dog(<span class="string">&#x27;Heymi&#x27;</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 访问属性</span></span><br><span class="line">my_dog.name</span><br><span class="line"><span class="comment"># 调用方法</span></span><br><span class="line">my_dog.sit()</span><br></pre></td></tr></table></figure>
-<h2 id="使用类和实例"><a href="#使用类和实例" class="headerlink" title="使用类和实例"></a>使用类和实例</h2><h3 id="给属性指定默认值"><a href="#给属性指定默认值" class="headerlink" title="给属性指定默认值"></a>给属性指定默认值</h3><p>类中的每个属性都必须有初始值，哪怕这个值是0或空字符串。在有些情况下，如设置默认值时，在方法__init__()内指定这种初始值是可行的；如果你对某个属性这样做了，就无需包含为它提供初始值的形参。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化描述汽车的属性&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.make = make</span><br><span class="line">		<span class="variable language_">self</span>.model = model</span><br><span class="line">		<span class="variable language_">self</span>.year = year</span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading = <span class="number">0</span> <span class="comment">#python将创建一个名为odometer_reading的属性，并将其初始值设置为0	</span></span><br></pre></td></tr></table></figure>
-<h3 id="修改属性的值"><a href="#修改属性的值" class="headerlink" title="修改属性的值"></a>修改属性的值</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">my_new_car = Car(<span class="string">&quot;audi&quot;</span>, <span class="string">&quot;a5&quot;</span>, <span class="number">2025</span>)</span><br><span class="line"><span class="comment"># 直接修改属性的值</span></span><br><span class="line">my_new_car.odometer_reading = <span class="number">23</span></span><br><span class="line"><span class="comment"># 通过方法修改属性的值</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">update_odometer</span>(<span class="params">self, mileage</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;将里程表读数设置为指定的值&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading = milege</span><br><span class="line">my_new_car.update_odometer(<span class="number">23</span>)</span><br><span class="line"><span class="comment"># 通过方法对属性的值进行递增</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">increment_odometer</span>(<span class="params">self, miles</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;将里程表读数增加指定的量&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading += miles</span><br></pre></td></tr></table></figure>
-<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为父类，而新类称为子类。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法。</p>
-<h3 id="子类的方法-init"><a href="#子类的方法-init" class="headerlink" title="子类的方法__init__()"></a>子类的方法__init__()</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;电动汽车的独特之处&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化父类的属性&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br></pre></td></tr></table></figure>
-<h3 id="python-2-7中的继承"><a href="#python-2-7中的继承" class="headerlink" title="python 2.7中的继承"></a>python 2.7中的继承</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>(ElectricCar, <span class="variable language_">self</span>).__init__(make, model, year) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
-<p>1 函数super()需要两个实参：子类名和对象self。<br>在python 2.7中使用继承时，务必在定义父类时在括号内指定object</p>
-<h3 id="给子类定义属性和方法"><a href="#给子类定义属性和方法" class="headerlink" title="给子类定义属性和方法"></a>给子类定义属性和方法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br><span class="line">		<span class="variable language_">self</span>.battery_size = <span class="number">70</span> <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
-<p>1 添加了新属性self.battery_size，并设置其初始值。根据ElectricCar类创建的所有实例都将包含这个属性，但所有Car实例都不包含它。</p>
-<h3 id="重写父类的方法"><a href="#重写父类的方法" class="headerlink" title="重写父类的方法"></a>重写父类的方法</h3><p>对于父类的方法，只要它不符合子类的行为，都可对其进行重写。为此，可在子类中定义一个与要重写的父类方法同名的方法。这样，python将不会考虑这个父类方法，而只关注你在子类中定义的方法。</p>
-<h3 id="将实例用作属性"><a href="#将实例用作属性" class="headerlink" title="将实例用作属性"></a>将实例用作属性</h3><p>使用代码模拟实物时，你可能会发现自己给类添加的细节越来越多：属性和方法清单以及文件都越来越长。在这种情况下，可能需要将类的一部分作为一个独立的类提取出来。<br>例如，不断给ElectricCar类添加细节时，可能其中包含很多专门针对Battery的属性和方法，则可将这些属性和方法提取出来，放到一个名为Battery的类中，并将一个Battery实例用作ElectricCar类的一个属性：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Battery</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, battery_size=<span class="number">70</span></span>): <span class="comment"># 1</span></span><br><span class="line">		<span class="variable language_">self</span>.battery_size = battery_size</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br><span class="line">		<span class="variable language_">self</span>.battery = Battery() <span class="comment"># 2</span></span><br></pre></td></tr></table></figure>
-<p>1: __init__()除self外，还有另一个形参battery_size。这个形参是可选的：如果没有给它提供值，电瓶容量将被设置为70。<br>2: 在ElectricCar类中，我们添加了一个名为self.battery的属性。这行代码让python创建一个新的Battery实例（由于没有指定尺寸，因此为默认值70），并将该实例存储在属性self.battery中。每当方法__init__()被调用时，都将执行该操作；因此现在每个ElectricCar实例都包含一个自动创建的Battery实例。</p>
-<h1 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h1><h2 id="导入函数"><a href="#导入函数" class="headerlink" title="导入函数"></a>导入函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> module_name <span class="comment"># 导入整个模块</span></span><br><span class="line">module_name.function_name() <span class="comment"># 使用模块中的函数需要使用句点</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> module_name <span class="keyword">import</span> function_name <span class="comment"># 导入特定函数，该函数后续使用时不需要句点</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pizza <span class="keyword">as</span> p <span class="comment"># 使用as给模块指定别名</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="导入类"><a href="#导入类" class="headerlink" title="导入类"></a>导入类</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> car <span class="keyword">import</span> Car, ElectricCar <span class="comment"># 在模块文件car.py中导入Car类、ElectricCar类</span></span><br><span class="line"><span class="keyword">import</span> car <span class="comment"># 导入整个car模块</span></span><br><span class="line">my_beetle = car.Car(<span class="string">&#x27;volkswagen&#x27;</span>, <span class="string">&#x27;beetle&#x27;</span>, <span class="number">2025</span>) <span class="comment"># 创建类实例代码都必须包含模块名，即需要使用句点访问</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><p>Python 中的注释有<strong>单行注释</strong>和<strong>多行注释</strong>。</p>
-<h2 id="单行注释"><a href="#单行注释" class="headerlink" title="单行注释"></a>单行注释</h2><p>单行注释以 # 开头，例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是一个注释</span></span><br><span class="line"><span class="built_in">print</span>(hello, world)</span><br></pre></td></tr></table></figure>
-<h2 id="多行注释"><a href="#多行注释" class="headerlink" title="多行注释"></a>多行注释</h2><p>多行注释用三个单引号 ‘’’ 或者三个双引号 “”” 将注释括起来，例如</p>
-<h3 id="单引号"><a href="#单引号" class="headerlink" title="单引号"></a>单引号</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3 </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号</span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号 </span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号</span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号 </span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="拓展说明"><a href="#拓展说明" class="headerlink" title="拓展说明"></a>拓展说明</h2><p>在 Python 中，多行注释是由三个单引号 ‘’’ 或三个双引号 “”” 来定义的，而且这种注释方式并不能嵌套使用。<br>当你开始一个多行注释块时，Python 会一直将后续的行都当作注释，直到遇到另一组三个单引号或三个双引号。<br><strong>嵌套多行注释会导致语法错误。</strong><br>例如，下面的示例是不合法的：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是外部的多行注释</span></span><br><span class="line"><span class="string">可以包含一些描述性的内容</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    这是尝试嵌套的多行注释</span><br><span class="line">    会导致语法错误</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>在这个例子中，内部的三个单引号并没有被正确识别为多行注释的结束，而是被解释为普通的字符串。<br>这将导致代码结构不正确，最终可能导致语法错误。<br>如果你需要在注释中包含嵌套结构，推荐使用单行注释（以#开头）而不是多行注释。<br>单行注释可以嵌套在多行注释中，而且不会引起语法错误。例如：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是外部的多行注释</span></span><br><span class="line"><span class="string">可以包含一些描述性的内容</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 这是内部的单行注释</span></span><br><span class="line"><span class="string"># 可以嵌套在多行注释中</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-<p>这样的结构是合法的，并且通常能够满足文档化和注释的需求。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>线性回归练习代码解读</title>
     <url>/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/</url>
     <content><![CDATA[<h1 id="part-1-函数定义-create-data"><a href="#part-1-函数定义-create-data" class="headerlink" title="part.1 函数定义 create_data()"></a>part.1 函数定义 create_data()</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_data</span>(<span class="params">w, b, data_num</span>):</span><br><span class="line">    x = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (data_num, <span class="built_in">len</span>(w)))  </span><br><span class="line">    y = torch.matmul(x, w) + b  </span><br><span class="line">  </span><br><span class="line">    noise = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)  </span><br><span class="line">    y += noise  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> x, y</span><br></pre></td></tr></table></figure>
-
 <p>定义了一个create_data函数，用于生成数据。</p>
 <p>torch.normal: <a href="https://pytorch.org/docs/stable/generated/torch.normal.html">docs</a></p>
 <p>torch.matmul: Matrix product of two tensors.</p>
 <p>x : 以0为均值，1为标准差，【(data_num)*(w长度)】的tensor数据<br>y : x*w + b 并在此基础上附加了noise扰动</p>
-<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319232552.png"></p>
+<p><img src="Pastedimage20250319232552.png" alt=""></p>
 <h1 id="part-2-变量赋值"><a href="#part-2-变量赋值" class="headerlink" title="part.2 变量赋值"></a>part.2 变量赋值</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">num = <span class="number">500</span>  </span><br><span class="line">  </span><br><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  </span><br><span class="line">true_b = torch.tensor(<span class="number">1.1</span>)</span><br><span class="line"></span><br><span class="line">X, Y = create_data(true_w, true_b, num)</span><br></pre></td></tr></table></figure>
-
-<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319234616.png"></p>
-<h1 id="part-3-main函数"><a href="#part-3-main函数" class="headerlink" title="part.3 main函数"></a>part.3 main函数</h1><p>跳过函数定义看代码主体部分：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr = <span class="number">0.05</span>  </span><br><span class="line">  </span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  </span><br><span class="line">b_0 = torch.tensor(<span class="number">0.01</span>, requires_grad=<span class="literal">True</span>)   </span><br><span class="line">  </span><br><span class="line">epochs = <span class="number">50</span></span><br></pre></td></tr></table></figure>
-
-<p>lr: 超参数，学习率<br>w_0, b_0：初始值<br>	requires_grad &#x3D; True：A tensor can be created with requires_grad&#x3D;True so that torch.autograd records operations on them for automatic differentiation.<br>	Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
+<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br><img src="Pastedimage20250319234616.png" alt=""></p>
+<h1 id="part-3-main函数"><a href="#part-3-main函数" class="headerlink" title="part.3 main函数"></a>part.3 main函数</h1><p>跳过函数定义看代码主体部分：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lr = <span class="number">0.05</span>  </span><br><span class="line">  </span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  </span><br><span class="line">b_0 = torch.tensor(<span class="number">0.01</span>, requires_grad=<span class="literal">True</span>)   </span><br><span class="line">  </span><br><span class="line">epochs = <span class="number">50</span></span><br></pre></td></tr></table></figure></p>
+<p>lr: 超参数，学习率<br>w_0, b_0：初始值<br>    requires_grad = True：A tensor can be created with requires_grad=True so that torch.autograd records operations on them for automatic differentiation.<br>    Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):  </span><br><span class="line">    data_loss = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> batch_x, batch_y <span class="keyword">in</span> data_provider(X, Y, batchsize):  </span><br><span class="line">        pred_y = fun(batch_x, w_0, b_0)  </span><br><span class="line">        loss = maeLoss(pred_y, batch_y)  </span><br><span class="line">        loss.backward()  </span><br><span class="line">        sgd([w_0, b_0], lr)  </span><br><span class="line">        data_loss += loss  </span><br><span class="line">  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;epoch %03d: loss: %.6f&quot;</span>%(epoch, data_loss))  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;真实的函数值是&quot;</span>, true_w, true_b)  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;深度学习得到的函数值是&quot;</span>, w_0, b_0)</span><br></pre></td></tr></table></figure>
 <p>from 66 to 78<br>data_loss变量：统计每一轮深度学习的效果<br>torch.backward():<a href="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/" title="深度学习python库">深度学习python库</a><br>当调用 <code>loss.backward()</code> 时：</p>
 <ul>
 <li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
-<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
+<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量<h1 id="part-4-函数定义"><a href="#part-4-函数定义" class="headerlink" title="part.4 函数定义"></a>part.4 函数定义</h1></li>
 </ul>
-<h1 id="part-4-函数定义"><a href="#part-4-函数定义" class="headerlink" title="part.4 函数定义"></a>part.4 函数定义</h1><h2 id="data-provider-函数"><a href="#data-provider-函数" class="headerlink" title="data_provider()函数"></a>data_provider()函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):  </span><br><span class="line">    length = <span class="built_in">len</span>(label)  </span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  </span><br><span class="line">    random.shuffle(indices)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):  </span><br><span class="line">        get_indices = indices[each: each + batchsize]  </span><br><span class="line">        get_data = data[get_indices]  </span><br><span class="line">        get_label = label[get_indices]  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">yield</span> get_data, get_label  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">batchsize = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+<h2 id="data-provider-函数"><a href="#data-provider-函数" class="headerlink" title="data_provider()函数"></a>data_provider()函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):  </span><br><span class="line">    length = <span class="built_in">len</span>(label)  </span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  </span><br><span class="line">    random.shuffle(indices)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):  </span><br><span class="line">        get_indices = indices[each: each + batchsize]  </span><br><span class="line">        get_data = data[get_indices]  </span><br><span class="line">        get_label = label[get_indices]  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">yield</span> get_data, get_label  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">batchsize = <span class="number">16</span></span><br></pre></td></tr></table></figure>
 <p>from 26 to 36<br>以下是 <code>data_provider()</code> 函数的逐行代码解读：</p>
 <hr>
 <h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a><strong>函数定义</strong></h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):</span><br></pre></td></tr></table></figure>
@@ -419,10 +59,11 @@
 <ul>
 <li><strong>循环机制</strong>：<ul>
 <li><code>each</code> 从0开始，以 <code>batchsize</code> 为步长递增</li>
-<li>最后一个批次可能小于 <code>batchsize</code>（例如总样本500，batchsize&#x3D;16时，最后一批次有4个样本）</li>
+<li>最后一个批次可能小于 <code>batchsize</code>（例如总样本500，batchsize=16时，最后一批次有4个样本）</li>
 </ul>
 </li>
-<li><strong>可视化</strong>：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">batch1: 0-15</span><br><span class="line">batch2: 16-31</span><br><span class="line">...</span><br><span class="line">batch31: 496-500</span><br></pre></td></tr></table></figure></li>
+<li><strong>可视化</strong>：<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">batch1: 0-15</span><br><span class="line">batch2: 16-31</span><br><span class="line">...</span><br><span class="line">batch31: 496-500</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
 <h4 id="5-获取当前批次索引"><a href="#5-获取当前批次索引" class="headerlink" title="5. 获取当前批次索引"></a><strong>5. 获取当前批次索引</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">get_indices = indices[each: each + batchsize]  <span class="comment"># 切片获取当前批次索引</span></span><br></pre></td></tr></table></figure>
@@ -452,10 +93,12 @@
 <li>内存效率：适合处理大型数据集</li>
 </ul>
 </li>
-<li><strong>使用场景</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在训练循环中使用</span></span><br><span class="line"><span class="keyword">for</span> batch_data, batch_label <span class="keyword">in</span> data_provider(X, Y, <span class="number">16</span>):</span><br><span class="line">    <span class="comment"># 执行训练步骤</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>使用场景</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在训练循环中使用</span></span><br><span class="line"><span class="keyword">for</span> batch_data, batch_label <span class="keyword">in</span> data_provider(X, Y, <span class="number">16</span>):</span><br><span class="line">    <span class="comment"># 执行训练步骤</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
-<h3 id="关键特性总结"><a href="#关键特性总结" class="headerlink" title="关键特性总结"></a><strong>关键特性总结</strong></h3><table>
+<h3 id="关键特性总结"><a href="#关键特性总结" class="headerlink" title="关键特性总结"></a><strong>关键特性总结</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>特性</th>
@@ -463,7 +106,8 @@
 <th>重要性</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>随机打乱</td>
 <td>每个epoch重新洗牌数据顺序</td>
 <td>防止模型记住样本顺序</td>
@@ -481,17 +125,18 @@
 <tr>
 <td>通用索引机制</td>
 <td>适用于任何支持高级索引的数据结构</td>
-<td>兼容NumPy&#x2F;PyTorch等张量</td>
+<td>兼容NumPy/PyTorch等张量</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="执行流程示意图"><a href="#执行流程示意图" class="headerlink" title="执行流程示意图"></a><strong>执行流程示意图</strong></h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">原始数据</span><br><span class="line">  │</span><br><span class="line">  ├─ 创建顺序索引 [0,1,2,...]</span><br><span class="line">  │</span><br><span class="line">  └─ 随机洗牌 → [253,12,487,...]</span><br><span class="line">            │</span><br><span class="line">            ├─ 切片[0:16] → batch1</span><br><span class="line">            ├─ 切片[16:32] → batch2</span><br><span class="line">            │</span><br><span class="line">            └─ ... → 直到遍历所有数据</span><br></pre></td></tr></table></figure>
-
 <p>该函数实现了深度学习训练中最基础且重要的 <strong>随机小批量采样</strong> 功能，是确保模型有效训练的关键组件。</p>
 <h2 id="fun-函数"><a href="#fun-函数" class="headerlink" title="fun()函数"></a>fun()函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):  </span><br><span class="line">    pred_y = torch.matmul(x, w) + b  </span><br><span class="line">    <span class="keyword">return</span> pred_y</span><br></pre></td></tr></table></figure>
 <p>根据给定的参数w, b对数据x生成预测值y并返回预测值pred_y</p>
 <h2 id="maeLoss-函数"><a href="#maeLoss-函数" class="headerlink" title="maeLoss()函数"></a>maeLoss()函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):  </span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)</span><br></pre></td></tr></table></figure>
-<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/06ec95ff3c17534440c17f2c5081b49.png"></p>
+<p><img src="06ec95ff3c17534440c17f2c5081b49.png" alt=""></p>
 <h2 id="sgd-函数"><a href="#sgd-函数" class="headerlink" title="sgd()函数"></a>sgd()函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">paras, lr</span>):  </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():  </span><br><span class="line">        <span class="keyword">for</span> para <span class="keyword">in</span> paras:  </span><br><span class="line">            para -= para.grad * lr  </span><br><span class="line">            para.grad.zero_()</span><br></pre></td></tr></table></figure>
 <p>以下是 <code>sgd</code> 函数的详细执行过程分析：</p>
 <hr>
@@ -513,7 +158,7 @@
 <hr>
 <h4 id="3-参数值更新"><a href="#3-参数值更新" class="headerlink" title="3. 参数值更新"></a><strong>3. 参数值更新</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">para -= para.grad * lr  <span class="comment"># 等价于 para = para - lr * para.grad</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><strong>数学意义</strong>：执行梯度下降更新<br>$$ \theta_{\text{new}} &#x3D; \theta_{\text{old}} - \eta \cdot \nabla_{\theta}\mathcal{L} $$</li>
+<li><strong>数学意义</strong>：执行梯度下降更新  <script type="math/tex; mode=display">\theta_{\text{new}} = \theta_{\text{old}} - \eta \cdot \nabla_{\theta}\mathcal{L}</script></li>
 <li><strong>实现细节</strong>：<ul>
 <li>原地修改张量的值 (<code>para</code> 是直接操作对象)</li>
 <li>由于在 <code>no_grad()</code> 上下文中，此操作不会影响后续反向传播的计算图</li>
@@ -524,7 +169,7 @@
 <h4 id="4-梯度清零"><a href="#4-梯度清零" class="headerlink" title="4. 梯度清零"></a><strong>4. 梯度清零</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">para.grad.zero_()</span><br></pre></td></tr></table></figure>
 <ul>
 <li><strong>必要性</strong>：<ul>
-<li>PyTorch 默认会累积梯度（梯度 +&#x3D; 新梯度）</li>
+<li>PyTorch 默认会累积梯度（梯度 += 新梯度）</li>
 <li>必须显式清零，否则下一个 batch 的梯度会与当前梯度错误叠加</li>
 </ul>
 </li>
@@ -532,6 +177,7 @@
 </ul>
 <hr>
 <h3 id="执行时序示例"><a href="#执行时序示例" class="headerlink" title="执行时序示例"></a><strong>执行时序示例</strong></h3><p>假设当前 batch 的梯度已计算完成（<code>loss.backward()</code> 后）：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -541,7 +187,8 @@
 <th>学习率 <code>lr</code></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>初始</td>
 <td>0.5</td>
 <td>2.0</td>
@@ -549,11 +196,13 @@
 </tr>
 <tr>
 <td>更新</td>
-<td>0.5 - 0.05*2.0 &#x3D; 0.4</td>
+<td>0.5 - 0.05*2.0 = 0.4</td>
 <td>2.0 → 0.0 (清零后)</td>
 <td>-</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="与标准实现的差异"><a href="#与标准实现的差异" class="headerlink" title="与标准实现的差异"></a><strong>与标准实现的差异</strong></h3><ol>
 <li><p><strong>手动更新 vs 优化器</strong>：</p>
@@ -578,10 +227,12 @@
 </ul>
 </li>
 <li><p><strong>更复杂的优化器</strong>：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加动量（需修改 sgd 函数）</span></span><br><span class="line">velocity = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sgd_momentum</span>(<span class="params">para, lr, momentum=<span class="number">0.9</span></span>):</span><br><span class="line">    velocity = momentum * velocity - lr * para.grad</span><br><span class="line">    para += velocity</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加动量（需修改 sgd 函数）</span></span><br><span class="line">velocity = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sgd_momentum</span>(<span class="params">para, lr, momentum=<span class="number">0.9</span></span>):</span><br><span class="line">    velocity = momentum * velocity - lr * para.grad</span><br><span class="line">    para += velocity</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h3><table>
+<h3 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>操作</th>
@@ -589,7 +240,8 @@
 <th>必要性等级</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>torch.no_grad()</code></td>
 <td>防止参数更新污染计算图</td>
 <td>必要</td>
@@ -604,10 +256,12 @@
 <td>防止梯度跨 batch 累积</td>
 <td>必要</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>通过这种手动实现的 SGD，开发者可以更直观地理解优化器底层的工作原理，但在实际项目中建议使用 PyTorch 内置优化器以获得更好的性能和稳定性。</p>
-<h3 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h3><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png"><br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/0b0fcf44d3b47e8a5e9e12faccd42bc.png"></p>
-<h1 id="深度学习的训练过程"><a href="#深度学习的训练过程" class="headerlink" title="深度学习的训练过程"></a>深度学习的训练过程</h1><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/607dc97725be3eecbb191ed4887eadb.png"></p>
+<h3 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h3><p><img src="5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png" alt=""><br><img src="0b0fcf44d3b47e8a5e9e12faccd42bc.png" alt=""></p>
+<h1 id="深度学习的训练过程"><a href="#深度学习的训练过程" class="headerlink" title="深度学习的训练过程"></a>深度学习的训练过程</h1><p><img src="607dc97725be3eecbb191ed4887eadb.png" alt=""></p>
 ]]></content>
       <categories>
         <category>深度学习</category>
@@ -616,6 +270,328 @@
       <tags>
         <tag>深度学习</tag>
         <tag>计算机考研复试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python基础</title>
+    <url>/2025/03/17/python/python%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><h2 id="整型-浮点型-字符串"><a href="#整型-浮点型-字符串" class="headerlink" title="整型/浮点型/字符串"></a>整型/浮点型/字符串</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">3</span> <span class="comment">#整型</span></span><br><span class="line">a = <span class="number">3.0</span> <span class="comment">#浮点型</span></span><br><span class="line">name = <span class="string">&quot;martin&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用函数str-避免类型错误"><a href="#使用函数str-避免类型错误" class="headerlink" title="使用函数str()避免类型错误"></a>使用函数str()避免类型错误</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">age = <span class="number">23</span></span><br><span class="line">message = <span class="string">&quot;Happy&quot;</span> + <span class="built_in">str</span>(age) + <span class="string">&quot;rd Birthday!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(message)</span><br></pre></td></tr></table></figure>
+<p>这里，调用函数str()，python将非字符串值表示为字符串</p>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><p>关键词：list []<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="built_in">print</span>(list1)</span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">2</span>]) <span class="comment"># 3</span></span><br><span class="line"><span class="built_in">print</span>(list1[-<span class="number">1</span>]) <span class="comment"># 5</span></span><br></pre></td></tr></table></figure><br>list[-1]将访问列表最后一个值，-2为倒数第二个值，以此类推。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list2 = [<span class="number">1</span>, <span class="string">&quot;art&quot;</span>, dict1] <span class="comment">#同一个列表中支持多种数据类型</span></span><br></pre></td></tr></table></figure>
+<h2 id="字典（哈希表）"><a href="#字典（哈希表）" class="headerlink" title="字典（哈希表）"></a>字典（哈希表）</h2><p>关键词： dict {key: value}<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;martin&quot;</span>, <span class="string">&quot;age&quot;</span>: <span class="number">18</span>, <span class="number">20</span>: <span class="number">80</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="string">&quot;name&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="string">&quot;age&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(dict1[<span class="number">20</span>])</span><br></pre></td></tr></table></figure></p>
+<h1 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h1><p><code>//</code> 地板除<br><code>/</code> 普通除<br><code>**</code> 乘方<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">9</span>/<span class="number">2</span>) <span class="comment"># 4.5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">9</span>//<span class="number">2</span>) <span class="comment"># 4</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">9</span>**<span class="number">2</span>) <span class="comment"># 81</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>带初值的函数示例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func1</span>(<span class="params">a, b = <span class="number">2</span></span>) <span class="comment">#如果传入b，返回a**b；否则，返回a**2</span></span><br><span class="line">	<span class="keyword">return</span> a ** b</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(func1(<span class="number">2</span>)) <span class="comment"># 4</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="列表-1"><a href="#列表-1" class="headerlink" title="列表"></a>列表</h1><h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:<span class="number">4</span>]) <span class="comment"># [2, 3, 4] 左闭右开</span></span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:-<span class="number">1</span>]) <span class="comment"># [2, 3, 4]</span></span><br><span class="line"><span class="built_in">print</span>(list1[:]) <span class="comment"># [1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="built_in">print</span>(list1[<span class="number">1</span>:]) <span class="comment"># [2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="添加元素"><a href="#添加元素" class="headerlink" title="添加元素"></a>添加元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1.append(<span class="number">6</span>) <span class="comment"># [1, 2, 3, 4, 5, 6] 在末尾添加</span></span><br><span class="line">list1.insert(<span class="number">0</span>, <span class="number">0.5</span>) <span class="comment">#[0.5, 1, 2, 3, 4, 5] 在指定位置添加</span></span><br><span class="line">list1.extend([<span class="number">8</span>, <span class="number">9</span>]) <span class="comment">#在列表末尾一次性追加另一个列表的多个值，即用新列表扩展原来的列表</span></span><br></pre></td></tr></table></figure>
+<h3 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">del</span> list1[<span class="number">0</span>] <span class="comment">#删除索引0处的元素，且不再以任何方式使用它</span></span><br><span class="line">list1.pop(index) <span class="comment">#删除索引index处的元素，但会继续使用它，index为空时默认为-1，即栈顶</span></span><br><span class="line">list1.remove(key) <span class="comment">#删除列表中值为key的元素，也可继续使用它的值；若列表中有多个值为key，remove只删除第一个指定的值</span></span><br></pre></td></tr></table></figure>
+<h3 id="列表排序"><a href="#列表排序" class="headerlink" title="列表排序"></a>列表排序</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1.sort() <span class="comment"># 永久顺序排序</span></span><br><span class="line">list1.sort(reverse = <span class="literal">True</span>) <span class="comment"># 永久倒序排序</span></span><br><span class="line"><span class="built_in">sorted</span>(list1, reverse = <span class="literal">True</span>) <span class="comment"># 临时倒序排序</span></span><br></pre></td></tr></table></figure>
+<h2 id="数值列表"><a href="#数值列表" class="headerlink" title="数值列表"></a>数值列表</h2><p>range()<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>):</span><br><span class="line">	<span class="built_in">print</span>(value)</span><br></pre></td></tr></table></figure><br>将打印数字1 2 3 4. 左闭右开<br>要创建数字列表，可使用函数list()将range()的结果直接转换为列表<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">5</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>) <span class="comment"># [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure><br>函数range()还可指定步长<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">even_numbers = <span class="built_in">list</span>(<span class="built_in">range</span>(<span class="number">2</span>,<span class="number">11</span>,<span class="number">2</span>))</span><br><span class="line"><span class="built_in">print</span>(even_numbers) <span class="comment"># [2, 4, 6, 8, 10]</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="确定列表的长度"><a href="#确定列表的长度" class="headerlink" title="确定列表的长度"></a>确定列表的长度</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">len</span>(<span class="built_in">list</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h1><h2 id="遍历字典"><a href="#遍历字典" class="headerlink" title="遍历字典"></a>遍历字典</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">favorite_languages = &#123;</span><br><span class="line">	<span class="string">&#x27;jen&#x27;</span>:<span class="string">&#x27;python&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;sarah&#x27;</span>:<span class="string">&#x27;c&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;edward&#x27;</span>:<span class="string">&#x27;ruby&#x27;</span>,</span><br><span class="line">	<span class="string">&#x27;phil&#x27;</span>:<span class="string">&#x27;python&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 遍历所有的键值对</span></span><br><span class="line"><span class="keyword">for</span> key, value <span class="keyword">in</span> favorite_languages.items()</span><br><span class="line"><span class="comment"># 遍历字典中所有的键</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> favorite_languages.keys()</span><br><span class="line"><span class="comment"># 遍历字典中所有的值</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> favorite_languages.values()</span><br><span class="line"><span class="comment"># 按顺序遍历</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">sorted</span>(favorite_languages.keys())</span><br><span class="line"><span class="comment"># 去重遍历</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> <span class="built_in">set</span>(favorite_languages.values())</span><br></pre></td></tr></table></figure>
+<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><h2 id="类编码风格"><a href="#类编码风格" class="headerlink" title="类编码风格"></a>类编码风格</h2><p>类名应采用驼峰命名法，即将类名中的每个单词的首字母都大写，而不使用下划线。实例名和模块名都采用小写格式，并在单词间加上下划线。<br>对于每个类，都应紧跟在类定义后面包含一个文档字符串。这种文档字符串简要地描述类的功能，并遵循编写函数的文档字符串时采用的格式约定。每个模块也都应包含一个文档字符串，对其中的类可用于做什么进行描述。<br>可使用空行来组织代码，但不要滥用。<strong>在类中，可使用一个空行来分隔方法；而在模块中，可使用两个空行来分隔类。</strong><br>需要同时导入标准库中的模块和你编写的模块时，先编写导入标准库模块的import语句，再添加一个空行，然后编写导入你自己编写模块的import语句。在包含多条import语句的程序中，这种做法让人更容易明白程序使用的各个模块都来自何方。</p>
+<h2 id="创建和使用类"><a href="#创建和使用类" class="headerlink" title="创建和使用类"></a>创建和使用类</h2><h3 id="创建类"><a href="#创建类" class="headerlink" title="创建类"></a>创建类</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化属性name和age&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.name = name</span><br><span class="line">		<span class="variable language_">self</span>.age = age</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">sit</span>(<span class="params">self</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;模拟小狗被命令时蹲下&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="variable language_">self</span>.name.title() + <span class="string">&quot; is now sitting.&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">roll_over</span>(<span class="params">self</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;模拟小狗被命令时打滚&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">print</span>(<span class="variable language_">self</span>.name.title() + <span class="string">&quot; rolled over!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>根据约定，在python中，首字母大写的名称指的是类。</li>
+<li>方法<strong>init</strong>()<ul>
+<li>类中的函数称为方法。</li>
+<li>方法<strong>init</strong>()是一个特殊的方法，每当你根据Dog类创建新实例时，python都会自动运行它。在这个方法的名称中，开头和末尾各有两个下划线，这是一种约定，旨在避免python默认方法与普通方法发生名称冲突。</li>
+<li>在这个方法的定义中，形参self必不可少，还必须位于其他形参的前面。因为python在调用这个<strong>init</strong>()方法来创建实例时，将自动传入形参self。每个与类相关联的方法调用都自动传递实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法。本例，我们创建Dog实例时，python将调用Dog类的方法<strong>init</strong>()。我们将通过实参向Dog()传递名字和年龄；self会自动传递，因此我们不需要传递它。每当我们根据Dog类创建实例时，都只需给最后两个形参(name和age)提供值。</li>
+<li>定义的两个变量都有前缀self。以self为前缀的变量都可供类中的所有方法使用，我们还可以通过类的任何实例来访问这些变量。self.name = name获取存储在形参name中的值，并将其存储到变量name中，然后该变量被关联到当前创建的实例。self.age = age的作用与此类似。像这样可通过实例访问的变量称为属性。</li>
+</ul>
+</li>
+<li>Dog类还定义了另外两个方法：sit()和roll_over()。由于这些方法不需要额外的信息，如名字和年龄，因此它们只有一个形参self。<h3 id="根据类创建实例"><a href="#根据类创建实例" class="headerlink" title="根据类创建实例"></a>根据类创建实例</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建实例 my_dog</span></span><br><span class="line">my_dog = Dog(<span class="string">&#x27;Heymi&#x27;</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 访问属性</span></span><br><span class="line">my_dog.name</span><br><span class="line"><span class="comment"># 调用方法</span></span><br><span class="line">my_dog.sit()</span><br></pre></td></tr></table></figure>
+<h2 id="使用类和实例"><a href="#使用类和实例" class="headerlink" title="使用类和实例"></a>使用类和实例</h2><h3 id="给属性指定默认值"><a href="#给属性指定默认值" class="headerlink" title="给属性指定默认值"></a>给属性指定默认值</h3>类中的每个属性都必须有初始值，哪怕这个值是0或空字符串。在有些情况下，如设置默认值时，在方法<strong>init</strong>()内指定这种初始值是可行的；如果你对某个属性这样做了，就无需包含为它提供初始值的形参。<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化描述汽车的属性&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.make = make</span><br><span class="line">		<span class="variable language_">self</span>.model = model</span><br><span class="line">		<span class="variable language_">self</span>.year = year</span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading = <span class="number">0</span> <span class="comment">#python将创建一个名为odometer_reading的属性，并将其初始值设置为0	</span></span><br></pre></td></tr></table></figure>
+<h3 id="修改属性的值"><a href="#修改属性的值" class="headerlink" title="修改属性的值"></a>修改属性的值</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">my_new_car = Car(<span class="string">&quot;audi&quot;</span>, <span class="string">&quot;a5&quot;</span>, <span class="number">2025</span>)</span><br><span class="line"><span class="comment"># 直接修改属性的值</span></span><br><span class="line">my_new_car.odometer_reading = <span class="number">23</span></span><br><span class="line"><span class="comment"># 通过方法修改属性的值</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">update_odometer</span>(<span class="params">self, mileage</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;将里程表读数设置为指定的值&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading = milege</span><br><span class="line">my_new_car.update_odometer(<span class="number">23</span>)</span><br><span class="line"><span class="comment"># 通过方法对属性的值进行递增</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">increment_odometer</span>(<span class="params">self, miles</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;将里程表读数增加指定的量&quot;&quot;&quot;</span></span><br><span class="line">		<span class="variable language_">self</span>.odometer_reading += miles</span><br></pre></td></tr></table></figure>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2>一个类继承另一个类时，它将自动获得另一个类的所有属性和方法；原有的类称为父类，而新类称为子类。子类继承了其父类的所有属性和方法，同时还可以定义自己的属性和方法。<h3 id="子类的方法init"><a href="#子类的方法init" class="headerlink" title="子类的方法init()"></a>子类的方法<strong>init</strong>()</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="string">&quot;&quot;&quot;电动汽车的独特之处&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="string">&quot;&quot;&quot;初始化父类的属性&quot;&quot;&quot;</span></span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br></pre></td></tr></table></figure>
+<h3 id="python-2-7中的继承"><a href="#python-2-7中的继承" class="headerlink" title="python 2.7中的继承"></a>python 2.7中的继承</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>(ElectricCar, <span class="variable language_">self</span>).__init__(make, model, year) <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+1 函数super()需要两个实参：子类名和对象self。<br>在python 2.7中使用继承时，务必在定义父类时在括号内指定object</li>
+</ul>
+<h3 id="给子类定义属性和方法"><a href="#给子类定义属性和方法" class="headerlink" title="给子类定义属性和方法"></a>给子类定义属性和方法</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br><span class="line">		<span class="variable language_">self</span>.battery_size = <span class="number">70</span> <span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+<p>1 添加了新属性self.battery_size，并设置其初始值。根据ElectricCar类创建的所有实例都将包含这个属性，但所有Car实例都不包含它。</p>
+<h3 id="重写父类的方法"><a href="#重写父类的方法" class="headerlink" title="重写父类的方法"></a>重写父类的方法</h3><p>对于父类的方法，只要它不符合子类的行为，都可对其进行重写。为此，可在子类中定义一个与要重写的父类方法同名的方法。这样，python将不会考虑这个父类方法，而只关注你在子类中定义的方法。</p>
+<h3 id="将实例用作属性"><a href="#将实例用作属性" class="headerlink" title="将实例用作属性"></a>将实例用作属性</h3><p>使用代码模拟实物时，你可能会发现自己给类添加的细节越来越多：属性和方法清单以及文件都越来越长。在这种情况下，可能需要将类的一部分作为一个独立的类提取出来。<br>例如，不断给ElectricCar类添加细节时，可能其中包含很多专门针对Battery的属性和方法，则可将这些属性和方法提取出来，放到一个名为Battery的类中，并将一个Battery实例用作ElectricCar类的一个属性：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>():</span><br><span class="line">	--snip--</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Battery</span>():</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, battery_size=<span class="number">70</span></span>): <span class="comment"># 1</span></span><br><span class="line">		<span class="variable language_">self</span>.battery_size = battery_size</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ElectricCar</span>(<span class="title class_ inherited__">Car</span>):</span><br><span class="line">	<span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, make, model, year</span>):</span><br><span class="line">		<span class="built_in">super</span>().__init__(make, model, year)</span><br><span class="line">		<span class="variable language_">self</span>.battery = Battery() <span class="comment"># 2</span></span><br></pre></td></tr></table></figure><br>1: __init<strong>()除self外，还有另一个形参battery_size。这个形参是可选的：如果没有给它提供值，电瓶容量将被设置为70。<br>2: 在ElectricCar类中，我们添加了一个名为self.battery的属性。这行代码让python创建一个新的Battery实例（由于没有指定尺寸，因此为默认值70），并将该实例存储在属性self.battery中。每当方法</strong>init__()被调用时，都将执行该操作；因此现在每个ElectricCar实例都包含一个自动创建的Battery实例。</p>
+<h1 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h1><h2 id="导入函数"><a href="#导入函数" class="headerlink" title="导入函数"></a>导入函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> module_name <span class="comment"># 导入整个模块</span></span><br><span class="line">module_name.function_name() <span class="comment"># 使用模块中的函数需要使用句点</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> module_name <span class="keyword">import</span> function_name <span class="comment"># 导入特定函数，该函数后续使用时不需要句点</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pizza <span class="keyword">as</span> p <span class="comment"># 使用as给模块指定别名</span></span><br></pre></td></tr></table></figure>
+<h2 id="导入类"><a href="#导入类" class="headerlink" title="导入类"></a>导入类</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> car <span class="keyword">import</span> Car, ElectricCar <span class="comment"># 在模块文件car.py中导入Car类、ElectricCar类</span></span><br><span class="line"><span class="keyword">import</span> car <span class="comment"># 导入整个car模块</span></span><br><span class="line">my_beetle = car.Car(<span class="string">&#x27;volkswagen&#x27;</span>, <span class="string">&#x27;beetle&#x27;</span>, <span class="number">2025</span>) <span class="comment"># 创建类实例代码都必须包含模块名，即需要使用句点访问</span></span><br></pre></td></tr></table></figure>
+<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><p>Python 中的注释有<strong>单行注释</strong>和<strong>多行注释</strong>。</p>
+<h2 id="单行注释"><a href="#单行注释" class="headerlink" title="单行注释"></a>单行注释</h2><p>单行注释以 # 开头，例如：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#这是一个注释</span></span><br><span class="line"><span class="built_in">print</span>(hello, world)</span><br></pre></td></tr></table></figure></p>
+<h2 id="多行注释"><a href="#多行注释" class="headerlink" title="多行注释"></a>多行注释</h2><p>多行注释用三个单引号 ‘’’ 或者三个双引号 “”” 将注释括起来，例如</p>
+<h3 id="单引号"><a href="#单引号" class="headerlink" title="单引号"></a>单引号</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3 </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号</span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号 </span></span><br><span class="line"><span class="string">这是多行注释，用三个单引号</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3 </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号</span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号 </span></span><br><span class="line"><span class="string">这是多行注释（字符串），用三个双引号</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="拓展说明"><a href="#拓展说明" class="headerlink" title="拓展说明"></a>拓展说明</h2><p>在 Python 中，多行注释是由三个单引号 ‘’’ 或三个双引号 “”” 来定义的，而且这种注释方式并不能嵌套使用。<br>当你开始一个多行注释块时，Python 会一直将后续的行都当作注释，直到遇到另一组三个单引号或三个双引号。<br><strong>嵌套多行注释会导致语法错误。</strong><br>例如，下面的示例是不合法的：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是外部的多行注释</span></span><br><span class="line"><span class="string">可以包含一些描述性的内容</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    这是尝试嵌套的多行注释</span><br><span class="line">    会导致语法错误</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure><br>在这个例子中，内部的三个单引号并没有被正确识别为多行注释的结束，而是被解释为普通的字符串。<br>这将导致代码结构不正确，最终可能导致语法错误。<br>如果你需要在注释中包含嵌套结构，推荐使用单行注释（以#开头）而不是多行注释。<br>单行注释可以嵌套在多行注释中，而且不会引起语法错误。例如：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">这是外部的多行注释</span></span><br><span class="line"><span class="string">可以包含一些描述性的内容</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 这是内部的单行注释</span></span><br><span class="line"><span class="string"># 可以嵌套在多行注释中</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure><br>这样的结构是合法的，并且通常能够满足文档化和注释的需求。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>深度学习python库</title>
+    <url>/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h2 id="变量及基本操作"><a href="#变量及基本操作" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list1 = [  </span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],  </span><br><span class="line">    [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>],  </span><br><span class="line">    [<span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>],  </span><br><span class="line">    [<span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>]  </span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">array1 = np.array(list1) <span class="comment"># 将列表转化为矩阵，打印的效果会不一样</span></span><br><span class="line"></span><br><span class="line">array2 = array1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵合并，默认axis = 0, 纵向合并。 axis = 1为横向合并，以此类推</span></span><br><span class="line">array3 = np.concatenate((array1, array2), axis = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="矩阵的切片"><a href="#矩阵的切片" class="headerlink" title="矩阵的切片"></a>矩阵的切片</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(array3[<span class="number">1</span>:<span class="number">3</span>, <span class="number">2</span>:<span class="number">4</span>]) <span class="comment"># 可以在两个维度进行切片</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以跳着切</span></span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(array3[:, list2])</span><br></pre></td></tr></table></figure>
+<h1 id="torch"><a href="#torch" class="headerlink" title="torch"></a>torch</h1><h2 id="变量及基本操作-1"><a href="#变量及基本操作-1" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="张量-tensor"><a href="#张量-tensor" class="headerlink" title="张量 tensor"></a>张量 tensor</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor1 = torch.tensor(list1)  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(array1)  </span><br><span class="line"><span class="built_in">print</span>(tensor1)</span><br></pre></td></tr></table></figure>
+<p>输出如下： tensor与array的区别仅在于tensor将array放在了一张张量网上，可以进行梯度计算<br><img src="Pastedimage20250319161350.png" alt=""></p>
+<h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">3.0</span>)</span><br><span class="line">x.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">y = x**<span class="number">2</span></span><br><span class="line">y.backward() <span class="comment"># 2x = 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个变量的梯度会在变量中进行记录，如果对一个变量分别求两次梯度，需进行清零。否则会出现梯度累加，导致计算错误，如本例中不进行清零x的梯度将为6 + 6 = 12</span></span><br><span class="line">x.grad = torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line">y2.backward() <span class="comment">#2x = 6</span></span><br><span class="line"></span><br><span class="line">x.detach() <span class="comment"># 将x在张量网上摘下，不再计算梯度</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建张量"><a href="#创建张量" class="headerlink" title="创建张量"></a>创建张量</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor1 = torch.ones((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是1的张量</span></span><br><span class="line">tensor0 = torch.zeros((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是0的张量</span></span><br><span class="line">tensor2 = torch.normal(mean, std, shape) <span class="comment"># 创建一个形状为shape，均值为mean，标准差为std的正态分布的张量</span></span><br><span class="line"><span class="comment"># ep</span></span><br><span class="line">tensor2 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, (<span class="number">3</span>, <span class="number">10</span>, <span class="number">4</span>)) <span class="comment"># 均值为0，标准差为0.01，形状3维10行4列</span></span><br></pre></td></tr></table></figure>
+<h3 id="张量求和"><a href="#张量求和" class="headerlink" title="张量求和"></a>张量求和</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sum1 = torch.<span class="built_in">sum</span>(tensor1, dim = <span class="number">0</span> <span class="keyword">or</span> <span class="number">1</span>, keepdim = <span class="literal">True</span>) <span class="comment"># 0按列求和，1按行求和; keepdim保持原shape打印</span></span><br></pre></td></tr></table></figure>
+<h3 id="张量形状"><a href="#张量形状" class="headerlink" title="张量形状"></a>张量形状</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor.shape</span><br></pre></td></tr></table></figure>
+<h2 id="tensor-backward"><a href="#tensor-backward" class="headerlink" title="tensor.backward()"></a>tensor.backward()</h2><p>在PyTorch中，<code>tensor.backward()</code> 是实现自动微分（Autograd）的核心方法。它的主要作用是计算当前张量相对于某个标量值的梯度，并存储在相应张量的 <code>.grad</code> 属性中。以下是关键要点：</p>
+<ol>
+<li><p><strong>基本用法</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">2</span></span><br><span class="line">y.backward()  <span class="comment"># 计算梯度</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出：tensor(4.)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>工作原理</strong>：</p>
+</li>
+</ol>
+<ul>
+<li>构建计算图：所有涉及<code>requires_grad=True</code>张量的运算都会记录在动态计算图中</li>
+<li>反向传播：从调用<code>backward()</code>的张量开始，反向遍历计算图应用链式法则</li>
+<li>梯度累积：结果梯度会累加到叶子节点的<code>.grad</code>属性中</li>
+</ul>
+<ol>
+<li><p><strong>参数说明</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当输出是非标量时需指定梯度权重</span></span><br><span class="line">x = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]))  <span class="comment"># 等效于y.sum().backward()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留计算图结构（用于多次反向传播）</span></span><br><span class="line">loss.backward(retain_graph=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>典型应用场景</strong>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 训练循环中的典型用法</span></span><br><span class="line"><span class="keyword">for</span> data, target <span class="keyword">in</span> dataloader:</span><br><span class="line">    optimizer.zero_grad()  <span class="comment"># 清空梯度</span></span><br><span class="line">    output = model(data)</span><br><span class="line">    loss = loss_fn(output, target)</span><br><span class="line">    loss.backward()        <span class="comment"># 计算梯度</span></span><br><span class="line">    optimizer.step()       <span class="comment"># 更新参数</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><ul>
+<li>梯度会自动累积，需手动调用<code>zero_grad()</code>清除</li>
+<li>默认会释放计算图，二次调用<code>backward()</code>需设置<code>retain_graph=True</code></li>
+<li>只能对标量值直接调用<code>backward()</code>，多维张量需提供<code>gradient</code>参数<br>以下是关于PyTorch中<code>tensor.backward()</code>两个关键机制的深入解释：</li>
+</ul>
+<hr>
+<h4 id="1-默认释放计算图与retain-graph-True的作用"><a href="#1-默认释放计算图与retain-graph-True的作用" class="headerlink" title="1. 默认释放计算图与retain_graph=True的作用"></a>1. <strong>默认释放计算图与<code>retain_graph=True</code>的作用</strong></h4><h5 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h5><p>PyTorch的自动微分系统基于动态计算图（Dynamic Computation Graph）。当调用<code>backward()</code>时：</p>
+<ul>
+<li><strong>默认行为</strong>：反向传播完成后，计算图会被<strong>立即释放</strong>以节省内存。</li>
+<li><strong>问题</strong>：如果尝试再次调用<code>backward()</code>，由于计算图已销毁，会抛出<code>RuntimeError</code>。</li>
+</ul>
+<h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次反向传播（正常执行）</span></span><br><span class="line">y.backward()  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor(12.)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二次反向传播（会报错）</span></span><br><span class="line">y.backward()  <span class="comment"># ❌ RuntimeError: Trying to backward through the graph a second time</span></span><br></pre></td></tr></table></figure>
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>通过<code>retain_graph=True</code>保留计算图：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y.backward(retain_graph=<span class="literal">True</span>)  <span class="comment"># 第一次反向传播保留计算图</span></span><br><span class="line">y.backward()                   <span class="comment"># ✅ 可再次执行</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)                  <span class="comment"># 梯度累积为 12 + 12 = 24</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
+<li><strong>内存开销</strong>：保留计算图会增加内存占用，需谨慎使用</li>
+<li><strong>应用场景</strong>：如GAN需要交替训练生成器和判别器时</li>
+<li><strong>替代方案</strong>：使用<code>torch.autograd.grad()</code>直接计算梯度（不修改<code>.grad</code>属性）</li>
+</ul>
+<hr>
+<h4 id="2-标量限制与gradient参数的作用"><a href="#2-标量限制与gradient参数的作用" class="headerlink" title="2. 标量限制与gradient参数的作用"></a>2. <strong>标量限制与<code>gradient</code>参数的作用</strong></h4><h5 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h5><ul>
+<li><strong>标量限制</strong>：数学上梯度定义为<strong>标量函数对张量的导数</strong>。当输出是非标量时，PyTorch无法确定如何聚合多维输出的梯度。</li>
+<li><strong>gradient参数</strong>：本质是一个权重向量，用于计算<strong>加权和的梯度</strong>（相当于<code>torch.sum(gradient * output)</code>）。</li>
+</ul>
+<h5 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span>  <span class="comment"># y = [2.0, 4.0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 直接调用会报错</span></span><br><span class="line">y.backward()  <span class="comment"># RuntimeError: grad can be implicitly created only for scalar outputs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确方式：提供gradient参数</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([2., 2.]) </span></span><br><span class="line">               <span class="comment"># 计算过程：d(sum(y))/dx = d(2x1 + 2x2)/dx = [2, 2]</span></span><br></pre></td></tr></table></figure>
+<h5 id="数学等价性"><a href="#数学等价性" class="headerlink" title="数学等价性"></a>数学等价性</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 以下两种写法等价</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">y.<span class="built_in">sum</span>().backward()</span><br></pre></td></tr></table></figure>
+<h5 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 自定义权重计算梯度</span></span><br><span class="line">gradient_weights = torch.tensor([<span class="number">0.5</span>, <span class="number">2.0</span>])</span><br><span class="line">y.backward(gradient=gradient_weights)</span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([1., 4.]) </span></span><br><span class="line">               <span class="comment"># 计算：0.5*2 + 2.0*2 = [1, 4]</span></span><br></pre></td></tr></table></figure>
+<h5 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h5><ul>
+<li><strong>默认行为</strong>：当输出是标量时，等价于<code>gradient=torch.tensor(1.0)</code></li>
+<li><strong>广播机制</strong>：<code>gradient</code>的形状必须与输出张量形状匹配</li>
+<li><strong>物理意义</strong>：可理解为对多维输出不同通道的梯度重要性加权</li>
+</ul>
+<h3 id="梯度计算解牛"><a href="#梯度计算解牛" class="headerlink" title="梯度计算解牛"></a>梯度计算解牛</h3><h4 id="1-梯度计算的本质"><a href="#1-梯度计算的本质" class="headerlink" title="1. 梯度计算的本质"></a><strong>1. 梯度计算的本质</strong></h4><p>PyTorch的梯度计算本质上是 <strong>逐元素（element-wise）</strong> 进行的。对于任意形状的张量：</p>
+<ul>
+<li>梯度张量与原张量形状 <strong>严格一致</strong></li>
+<li>每个元素的梯度表示 <strong>该元素对最终标量损失值的贡献</strong></li>
+</ul>
+<h5 id="示例代码中的-w-0"><a href="#示例代码中的-w-0" class="headerlink" title="示例代码中的 w_0"></a>示例代码中的 <code>w_0</code></h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  <span class="comment"># 4维向量</span></span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  <span class="comment"># 形状为 (4,)</span></span><br></pre></td></tr></table></figure>
+<p>当调用 <code>loss.backward()</code> 时：</p>
+<ul>
+<li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
+<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
+</ul>
+<hr>
+<h4 id="2-计算过程可视化"><a href="#2-计算过程可视化" class="headerlink" title="2. 计算过程可视化"></a><strong>2. 计算过程可视化</strong></h4><p>假设当前 <code>w_0</code> 和梯度如下：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w_0 = tensor([w1, w2, w3, w4], requires_grad=<span class="literal">True</span>)  <span class="comment"># 实际值可能是 [0.1, -0.2, 0.05, 0.3]</span></span><br><span class="line">grad = tensor([dw1, dw2, dw3, dw4])                <span class="comment"># 例如 [1.2, 0.8, -0.5, 2.1]</span></span><br></pre></td></tr></table></figure></p>
+<p>参数更新操作：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">w_0 -= lr * w_0.grad</span><br><span class="line"><span class="comment"># 等价于：</span></span><br><span class="line">w1_new = w1 - lr * dw1</span><br><span class="line">w2_new = w2 - lr * dw2</span><br><span class="line">w3_new = w3 - lr * dw3</span><br><span class="line">w4_new = w4 - lr * dw4</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="3-数学推导验证"><a href="#3-数学推导验证" class="headerlink" title="3. 数学推导验证"></a><strong>3. 数学推导验证</strong></h4><p>假设模型为：</p>
+<script type="math/tex; mode=display">
+\hat{y} = X \cdot w + b</script><p>损失函数为MAE：</p>
+<script type="math/tex; mode=display">
+\mathcal{L} = \frac{1}{N} \sum |\hat{y} - y|</script><p>对 $w_j$ 的梯度为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \mathcal{L}}{\partial w_j} = \frac{1}{N} \sum \text{sign}(\hat{y}-y) \cdot X_{[:,j]}</script><p>PyTorch会自动计算每个 $w_j$ 对应的梯度分量，并拼合成形状为 <code>(4,)</code> 的梯度张量。</p>
+<hr>
+<h4 id="4-代码执行细节验证"><a href="#4-代码执行细节验证" class="headerlink" title="4. 代码执行细节验证"></a><strong>4. 代码执行细节验证</strong></h4><p>在你的代码中：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):</span><br><span class="line">    pred_y = torch.matmul(x, w) + b  <span class="comment"># x形状(batch_size,4), w形状(4,)</span></span><br><span class="line">    <span class="keyword">return</span> pred_y                    <span class="comment"># 输出形状(batch_size,)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):</span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)  <span class="comment"># 输出是标量</span></span><br></pre></td></tr></table></figure></p>
+<p>反向传播时：</p>
+<ol>
+<li><code>loss</code> 是标量（关键！）</li>
+<li>通过链式法则，PyTorch会自动计算标量损失对每个 <code>w_j</code> 的梯度</li>
+<li>所有梯度按原始维度组织，存储在 <code>w_0.grad</code></li>
+</ol>
+<hr>
+<h4 id="5-梯度形状验证实验"><a href="#5-梯度形状验证实验" class="headerlink" title="5. 梯度形状验证实验"></a><strong>5. 梯度形状验证实验</strong></h4><p>可以添加调试代码验证梯度形状：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(w_0.shape)        <span class="comment"># 输出: torch.Size([4])</span></span><br><span class="line"><span class="built_in">print</span>(w_0.grad.shape)   <span class="comment"># 反向传播后会输出: torch.Size([4])</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h4 id="6-与一维情况的对比"><a href="#6-与一维情况的对比" class="headerlink" title="6. 与一维情况的对比"></a><strong>6. 与一维情况的对比</strong></h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数类型</th>
+<th>参数形状</th>
+<th>梯度形状</th>
+<th>更新方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标量</td>
+<td>()</td>
+<td>()</td>
+<td><code>w -= lr * w.grad</code></td>
+</tr>
+<tr>
+<td>向量</td>
+<td>(4,)</td>
+<td>(4,)</td>
+<td>逐元素更新</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>(3,4)</td>
+<td>(3,4)</td>
+<td>每个矩阵元素独立更新</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h4 id="为什么没有维度冲突？"><a href="#为什么没有维度冲突？" class="headerlink" title="为什么没有维度冲突？"></a><strong>为什么没有维度冲突？</strong></h4><ul>
+<li><strong>关键点</strong>：损失函数最终输出始终是 <strong>标量</strong>（<code>maeLoss</code> 返回的是平均值）</li>
+<li><strong>数学保证</strong>：标量对任意维度张量的导数自然保持与原张量相同的形状</li>
+<li><strong>PyTorch特性</strong>：自动微分系统会处理任意维度的张量梯度计算</li>
+</ul>
+<hr>
+<h4 id="常见误区澄清"><a href="#常见误区澄清" class="headerlink" title="常见误区澄清"></a><strong>常见误区澄清</strong></h4><p>误区：<em>“多维张量需要特殊处理才能计算梯度”</em></p>
+<p>事实：</p>
+<ul>
+<li>只要最终损失是标量，PyTorch可以处理任意维度的参数梯度</li>
+<li>无论参数是标量、向量、矩阵还是高阶张量，梯度计算规则一致</li>
+<li>参数更新时的逐元素操作是自动完成的</li>
+</ul>
+<h1 id="matplotlib-pyplot"><a href="#matplotlib-pyplot" class="headerlink" title="matplotlib.pyplot"></a>matplotlib.pyplot</h1><h2 id="plt-plot"><a href="#plt-plot" class="headerlink" title="plt.plot()"></a>plt.plot()</h2><p>在使用 PyTorch 进行深度学习训练时，如果要将张量数据传递给 <code>matplotlib.pyplot.plot()</code> 进行可视化，通常需要添加 <code>.detach().numpy()</code> 操作。这是由 PyTorch 张量和 Matplotlib 的底层机制差异导致的，具体原因如下：</p>
+<hr>
+<h3 id="1-核心原因：数据格式转换"><a href="#1-核心原因：数据格式转换" class="headerlink" title="1. 核心原因：数据格式转换"></a><strong>1. 核心原因：数据格式转换</strong></h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作步骤</th>
+<th>作用</th>
+<th>必要性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.detach()</code></td>
+<td>将张量从计算图中分离，得到一个不需要梯度追踪的新张量</td>
+<td>必要</td>
+</tr>
+<tr>
+<td><code>.numpy()</code></td>
+<td>将 PyTorch 张量转换为 NumPy 数组（Matplotlib 只能处理 NumPy 数组或 Python 原生数据类型）</td>
+<td>必要</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="2-分步详解"><a href="#2-分步详解" class="headerlink" title="2. 分步详解"></a><strong>2. 分步详解</strong></h3><h4 id="（1）脱离计算图（-detach-）"><a href="#（1）脱离计算图（-detach-）" class="headerlink" title="（1）脱离计算图（.detach()）"></a><strong>（1）脱离计算图（.detach()）</strong></h4><ul>
+<li><strong>问题背景</strong>：PyTorch 张量可能带有梯度信息（<code>requires_grad=True</code>）</li>
+<li><strong>风险</strong>：如果直接使用带有梯度的张量：<ul>
+<li>会增加不必要的内存占用（保持计算图）</li>
+<li>可能引发意外的梯度传播（尽管绘图操作不需要梯度）</li>
+</ul>
+</li>
+<li><strong>示例对比</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 原始张量（带梯度）</span></span><br><span class="line">tensor_with_grad = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接转换会报错</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    plt.plot(tensor_with_grad)  <span class="comment"># ❌ 报错：Can&#x27;t call numpy() on Tensor that requires grad</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确做法</span></span><br><span class="line">plt.plot(tensor_with_grad.detach().numpy())  <span class="comment"># ✅ 正常工作</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="（2）设备转移（CPU-GPU）"><a href="#（2）设备转移（CPU-GPU）" class="headerlink" title="（2）设备转移（CPU/GPU）"></a><strong>（2）设备转移（CPU/GPU）</strong></h4><ul>
+<li><strong>问题背景</strong>：如果张量在 GPU 上（<code>device=&#39;cuda&#39;</code>）</li>
+<li><strong>风险</strong>：Matplotlib 无法直接处理 GPU 上的张量</li>
+<li><strong>完整转换流程</strong>：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GPU 张量处理流程</span></span><br><span class="line">gpu_tensor = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 错误方式</span></span><br><span class="line">plt.plot(gpu_tensor.cpu().detach().numpy())  <span class="comment"># ❌ 顺序错误，应先 detach</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确方式</span></span><br><span class="line">plt.plot(gpu_tensor.detach().cpu().numpy())  <span class="comment"># ✅ 正确顺序：detach → cpu → numpy</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="（3）数据类型转换"><a href="#（3）数据类型转换" class="headerlink" title="（3）数据类型转换"></a><strong>（3）数据类型转换</strong></h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PyTorch Tensor</td>
+<td>可以是任意形状和数据类型（float32, int64 等）</td>
+</tr>
+<tr>
+<td>NumPy Array</td>
+<td>Matplotlib 的底层数据容器，与 PyTorch 内存不兼容</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="3-完整转换流程"><a href="#3-完整转换流程" class="headerlink" title="3. 完整转换流程"></a><strong>3. 完整转换流程</strong></h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 假设有一个需要绘制的 PyTorch 张量</span></span><br><span class="line">original_tensor = torch.randn(<span class="number">100</span>, requires_grad=<span class="literal">True</span>, device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安全转换步骤</span></span><br><span class="line">plot_data = original_tensor.detach()  <span class="comment"># 1. 脱离计算图</span></span><br><span class="line">                .cpu()                <span class="comment"># 2. 转移到 CPU（如果是 GPU 张量）</span></span><br><span class="line">                .numpy()              <span class="comment"># 3. 转换为 NumPy 数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图形</span></span><br><span class="line">plt.plot(plot_data)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-常见错误场景"><a href="#4-常见错误场景" class="headerlink" title="4. 常见错误场景"></a><strong>4. 常见错误场景</strong></h3><h4 id="场景-1：未分离计算图"><a href="#场景-1：未分离计算图" class="headerlink" title="场景 1：未分离计算图"></a><strong>场景 1：未分离计算图</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.linspace(<span class="number">0</span>, <span class="number">2</span>*np.pi, <span class="number">100</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = torch.sin(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x.numpy(), y.numpy())  <span class="comment"># ❌ RuntimeError: Can&#x27;t call numpy() on Tensor that requires grad</span></span><br></pre></td></tr></table></figure>
+<h4 id="场景-2：未处理-GPU-张量"><a href="#场景-2：未处理-GPU-张量" class="headerlink" title="场景 2：未处理 GPU 张量"></a><strong>场景 2：未处理 GPU 张量</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">gpu_data = torch.randn(<span class="number">10</span>).cuda()</span><br><span class="line">plt.plot(gpu_data.detach().numpy())  <span class="comment"># ❌ TypeError: can&#x27;t convert cuda:0 device type tensor to numpy</span></span><br></pre></td></tr></table></figure>
+<h4 id="场景-3：错误操作顺序"><a href="#场景-3：错误操作顺序" class="headerlink" title="场景 3：错误操作顺序"></a><strong>场景 3：错误操作顺序</strong></h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 先转 NumPy 再 detach 会丢失梯度信息</span></span><br><span class="line">temp = y.numpy()         <span class="comment"># ❌ 错误开始点</span></span><br><span class="line">detached = temp.detach() <span class="comment"># ❌ AttributeError: &#x27;numpy.ndarray&#x27; object has no attribute &#x27;detach&#x27;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-最佳实践总结"><a href="#5-最佳实践总结" class="headerlink" title="5. 最佳实践总结"></a><strong>5. 最佳实践总结</strong></h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>推荐写法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU + 无梯度</td>
+<td><code>tensor.numpy()</code></td>
+<td>直接转换</td>
+</tr>
+<tr>
+<td>CPU + 有梯度</td>
+<td><code>tensor.detach().numpy()</code></td>
+<td>必须 detach</td>
+</tr>
+<tr>
+<td>GPU + 无梯度</td>
+<td><code>tensor.cpu().numpy()</code></td>
+<td>需要转移到 CPU</td>
+</tr>
+<tr>
+<td>GPU + 有梯度</td>
+<td><code>tensor.detach().cpu().numpy()</code></td>
+<td>完整流程</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h3 id="6-特殊场景处理"><a href="#6-特殊场景处理" class="headerlink" title="6. 特殊场景处理"></a><strong>6. 特殊场景处理</strong></h3><h4 id="保留梯度但需要可视化"><a href="#保留梯度但需要可视化" class="headerlink" title="保留梯度但需要可视化"></a><strong>保留梯度但需要可视化</strong></h4><p>如果需要在可视化后继续梯度计算（罕见需求）：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 with torch.no_grad(): 临时禁用梯度</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    plt.plot(x.cpu().numpy(), y.cpu().numpy())</span><br></pre></td></tr></table></figure></p>
+<h4 id="批量处理张量"><a href="#批量处理张量" class="headerlink" title="批量处理张量"></a><strong>批量处理张量</strong></h4><p>对于高维张量（如神经网络中间层输出）：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 假设 feature_map 是 4D 张量 (batch, channel, height, width)</span></span><br><span class="line">feature_map = model(inputs)</span><br><span class="line">plt.imshow(feature_map[<span class="number">0</span>, <span class="number">0</span>].detach().cpu().numpy())  <span class="comment"># 可视化第一个样本的第一个通道</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p><code>.detach().numpy()</code>（对于 GPU 张量还需 <code>.cpu()</code>）的组合操作是 PyTorch 与 Matplotlib 协作的 <strong>必要桥梁</strong>，其主要作用包括：</p>
+<ol>
+<li><strong>断开梯度传播</strong>：防止可视化操作影响反向传播</li>
+<li><strong>设备转移</strong>：确保数据位于 CPU 内存</li>
+<li><strong>格式转换</strong>：将张量转换为 Matplotlib 可识别的 NumPy 数组</li>
+</ol>
+<p>这种转换虽然增加了代码的复杂度，但能有效避免许多隐蔽的错误，是 PyTorch 可视化过程中必须掌握的关键技巧。</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>python</tag>
       </tags>
   </entry>
 </search>

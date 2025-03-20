@@ -259,41 +259,33 @@
         <h1 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
 <h2 id="变量及基本操作"><a href="#变量及基本操作" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">list1 = [  </span><br><span class="line">    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],  </span><br><span class="line">    [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>],  </span><br><span class="line">    [<span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>],  </span><br><span class="line">    [<span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>]  </span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">array1 = np.array(list1) <span class="comment"># 将列表转化为矩阵，打印的效果会不一样</span></span><br><span class="line"></span><br><span class="line">array2 = array1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵合并，默认axis = 0, 纵向合并。 axis = 1为横向合并，以此类推</span></span><br><span class="line">array3 = np.concatenate((array1, array2), axis = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="矩阵的切片"><a href="#矩阵的切片" class="headerlink" title="矩阵的切片"></a>矩阵的切片</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(array3[<span class="number">1</span>:<span class="number">3</span>, <span class="number">2</span>:<span class="number">4</span>]) <span class="comment"># 可以在两个维度进行切片</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以跳着切</span></span><br><span class="line">list2 = [<span class="number">1</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(array3[:, list2])</span><br></pre></td></tr></table></figure>
-
 <h1 id="torch"><a href="#torch" class="headerlink" title="torch"></a>torch</h1><h2 id="变量及基本操作-1"><a href="#变量及基本操作-1" class="headerlink" title="变量及基本操作"></a>变量及基本操作</h2><h3 id="张量-tensor"><a href="#张量-tensor" class="headerlink" title="张量 tensor"></a>张量 tensor</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tensor1 = torch.tensor(list1)  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(array1)  </span><br><span class="line"><span class="built_in">print</span>(tensor1)</span><br></pre></td></tr></table></figure>
-<p>输出如下： tensor与array的区别仅在于tensor将array放在了一张张量网上，可以进行梯度计算<br><img src="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/Pastedimage20250319161350.png"></p>
+<p>输出如下： tensor与array的区别仅在于tensor将array放在了一张张量网上，可以进行梯度计算<br><img src="Pastedimage20250319161350.png" alt=""></p>
 <h3 id="梯度计算"><a href="#梯度计算" class="headerlink" title="梯度计算"></a>梯度计算</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">3.0</span>)</span><br><span class="line">x.requires_grad_(<span class="literal">True</span>)</span><br><span class="line">y = x**<span class="number">2</span></span><br><span class="line">y.backward() <span class="comment"># 2x = 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个变量的梯度会在变量中进行记录，如果对一个变量分别求两次梯度，需进行清零。否则会出现梯度累加，导致计算错误，如本例中不进行清零x的梯度将为6 + 6 = 12</span></span><br><span class="line">x.grad = torch.tensor(<span class="number">0.0</span>)</span><br><span class="line">y2 = x**<span class="number">2</span></span><br><span class="line">y2.backward() <span class="comment">#2x = 6</span></span><br><span class="line"></span><br><span class="line">x.detach() <span class="comment"># 将x在张量网上摘下，不再计算梯度</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="创建张量"><a href="#创建张量" class="headerlink" title="创建张量"></a>创建张量</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tensor1 = torch.ones((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是1的张量</span></span><br><span class="line">tensor0 = torch.zeros((<span class="number">10</span>,<span class="number">1</span>)) <span class="comment"># 创建一个10行1列全是0的张量</span></span><br><span class="line">tensor2 = torch.normal(mean, std, shape) <span class="comment"># 创建一个形状为shape，均值为mean，标准差为std的正态分布的张量</span></span><br><span class="line"><span class="comment"># ep</span></span><br><span class="line">tensor2 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, (<span class="number">3</span>, <span class="number">10</span>, <span class="number">4</span>)) <span class="comment"># 均值为0，标准差为0.01，形状3维10行4列</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="张量求和"><a href="#张量求和" class="headerlink" title="张量求和"></a>张量求和</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum1 = torch.<span class="built_in">sum</span>(tensor1, dim = <span class="number">0</span> <span class="keyword">or</span> <span class="number">1</span>, keepdim = <span class="literal">True</span>) <span class="comment"># 0按列求和，1按行求和; keepdim保持原shape打印</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="张量形状"><a href="#张量形状" class="headerlink" title="张量形状"></a>张量形状</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensor.shape</span><br></pre></td></tr></table></figure>
-
 <h2 id="tensor-backward"><a href="#tensor-backward" class="headerlink" title="tensor.backward()"></a>tensor.backward()</h2><p>在PyTorch中，<code>tensor.backward()</code> 是实现自动微分（Autograd）的核心方法。它的主要作用是计算当前张量相对于某个标量值的梯度，并存储在相应张量的 <code>.grad</code> 属性中。以下是关键要点：</p>
 <ol>
-<li><strong>基本用法</strong>：</li>
-</ol>
+<li><p><strong>基本用法</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">2</span></span><br><span class="line">y.backward()  <span class="comment"># 计算梯度</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出：tensor(4.)</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li><strong>工作原理</strong>：</li>
+</li>
+<li><p><strong>工作原理</strong>：</p>
+</li>
 </ol>
 <ul>
 <li>构建计算图：所有涉及<code>requires_grad=True</code>张量的运算都会记录在动态计算图中</li>
 <li>反向传播：从调用<code>backward()</code>的张量开始，反向遍历计算图应用链式法则</li>
 <li>梯度累积：结果梯度会累加到叶子节点的<code>.grad</code>属性中</li>
 </ul>
-<ol start="3">
-<li><strong>参数说明</strong>：</li>
-</ol>
+<ol>
+<li><p><strong>参数说明</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 当输出是非标量时需指定梯度权重</span></span><br><span class="line">x = torch.randn(<span class="number">3</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>]))  <span class="comment"># 等效于y.sum().backward()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保留计算图结构（用于多次反向传播）</span></span><br><span class="line">loss.backward(retain_graph=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li><strong>典型应用场景</strong>：</li>
-</ol>
+</li>
+<li><p><strong>典型应用场景</strong>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练循环中的典型用法</span></span><br><span class="line"><span class="keyword">for</span> data, target <span class="keyword">in</span> dataloader:</span><br><span class="line">    optimizer.zero_grad()  <span class="comment"># 清空梯度</span></span><br><span class="line">    output = model(data)</span><br><span class="line">    loss = loss_fn(output, target)</span><br><span class="line">    loss.backward()        <span class="comment"># 计算梯度</span></span><br><span class="line">    optimizer.step()       <span class="comment"># 更新参数</span></span><br></pre></td></tr></table></figure>
-
+</li>
+</ol>
 <h3 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h3><ul>
 <li>梯度会自动累积，需手动调用<code>zero_grad()</code>清除</li>
 <li>默认会释放计算图，二次调用<code>backward()</code>需设置<code>retain_graph=True</code></li>
@@ -306,10 +298,7 @@
 <li><strong>问题</strong>：如果尝试再次调用<code>backward()</code>，由于计算图已销毁，会抛出<code>RuntimeError</code>。</li>
 </ul>
 <h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor(<span class="number">2.0</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x ** <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一次反向传播（正常执行）</span></span><br><span class="line">y.backward()  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor(12.)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二次反向传播（会报错）</span></span><br><span class="line">y.backward()  <span class="comment"># ❌ RuntimeError: Trying to backward through the graph a second time</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>通过<code>retain_graph=True</code>保留计算图：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">y.backward(retain_graph=<span class="literal">True</span>)  <span class="comment"># 第一次反向传播保留计算图</span></span><br><span class="line">y.backward()                   <span class="comment"># ✅ 可再次执行</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)                  <span class="comment"># 梯度累积为 12 + 12 = 24</span></span><br></pre></td></tr></table></figure>
-
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p>通过<code>retain_graph=True</code>保留计算图：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">y.backward(retain_graph=<span class="literal">True</span>)  <span class="comment"># 第一次反向传播保留计算图</span></span><br><span class="line">y.backward()                   <span class="comment"># ✅ 可再次执行</span></span><br><span class="line"><span class="built_in">print</span>(x.grad)                  <span class="comment"># 梯度累积为 12 + 12 = 24</span></span><br></pre></td></tr></table></figure></p>
 <h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><ul>
 <li><strong>内存开销</strong>：保留计算图会增加内存占用，需谨慎使用</li>
 <li><strong>应用场景</strong>：如GAN需要交替训练生成器和判别器时</li>
@@ -321,11 +310,8 @@
 <li><strong>gradient参数</strong>：本质是一个权重向量，用于计算<strong>加权和的梯度</strong>（相当于<code>torch.sum(gradient * output)</code>）。</li>
 </ul>
 <h5 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = x * <span class="number">2</span>  <span class="comment"># y = [2.0, 4.0]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 直接调用会报错</span></span><br><span class="line">y.backward()  <span class="comment"># RuntimeError: grad can be implicitly created only for scalar outputs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确方式：提供gradient参数</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))  </span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([2., 2.]) </span></span><br><span class="line">               <span class="comment"># 计算过程：d(sum(y))/dx = d(2x1 + 2x2)/dx = [2, 2]</span></span><br></pre></td></tr></table></figure>
-
 <h5 id="数学等价性"><a href="#数学等价性" class="headerlink" title="数学等价性"></a>数学等价性</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 以下两种写法等价</span></span><br><span class="line">y.backward(gradient=torch.tensor([<span class="number">1.</span>, <span class="number">1.</span>]))</span><br><span class="line"><span class="comment"># 等价于</span></span><br><span class="line">y.<span class="built_in">sum</span>().backward()</span><br></pre></td></tr></table></figure>
-
 <h5 id="高级用法"><a href="#高级用法" class="headerlink" title="高级用法"></a>高级用法</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义权重计算梯度</span></span><br><span class="line">gradient_weights = torch.tensor([<span class="number">0.5</span>, <span class="number">2.0</span>])</span><br><span class="line">y.backward(gradient=gradient_weights)</span><br><span class="line"><span class="built_in">print</span>(x.grad)  <span class="comment"># 输出: tensor([1., 4.]) </span></span><br><span class="line">               <span class="comment"># 计算：0.5*2 + 2.0*2 = [1, 4]</span></span><br></pre></td></tr></table></figure>
-
 <h5 id="注意-1"><a href="#注意-1" class="headerlink" title="注意"></a>注意</h5><ul>
 <li><strong>默认行为</strong>：当输出是标量时，等价于<code>gradient=torch.tensor(1.0)</code></li>
 <li><strong>广播机制</strong>：<code>gradient</code>的形状必须与输出张量形状匹配</li>
@@ -337,27 +323,24 @@
 <li>每个元素的梯度表示 <strong>该元素对最终标量损失值的贡献</strong></li>
 </ul>
 <h5 id="示例代码中的-w-0"><a href="#示例代码中的-w-0" class="headerlink" title="示例代码中的 w_0"></a>示例代码中的 <code>w_0</code></h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  <span class="comment"># 4维向量</span></span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  <span class="comment"># 形状为 (4,)</span></span><br></pre></td></tr></table></figure>
-
 <p>当调用 <code>loss.backward()</code> 时：</p>
 <ul>
 <li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
 <li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
 </ul>
 <hr>
-<h4 id="2-计算过程可视化"><a href="#2-计算过程可视化" class="headerlink" title="2. 计算过程可视化"></a><strong>2. 计算过程可视化</strong></h4><p>假设当前 <code>w_0</code> 和梯度如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w_0 = tensor([w1, w2, w3, w4], requires_grad=<span class="literal">True</span>)  <span class="comment"># 实际值可能是 [0.1, -0.2, 0.05, 0.3]</span></span><br><span class="line">grad = tensor([dw1, dw2, dw3, dw4])                <span class="comment"># 例如 [1.2, 0.8, -0.5, 2.1]</span></span><br></pre></td></tr></table></figure>
-
-<p>参数更新操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">w_0 -= lr * w_0.grad</span><br><span class="line"><span class="comment"># 等价于：</span></span><br><span class="line">w1_new = w1 - lr * dw1</span><br><span class="line">w2_new = w2 - lr * dw2</span><br><span class="line">w3_new = w3 - lr * dw3</span><br><span class="line">w4_new = w4 - lr * dw4</span><br></pre></td></tr></table></figure>
-
+<h4 id="2-计算过程可视化"><a href="#2-计算过程可视化" class="headerlink" title="2. 计算过程可视化"></a><strong>2. 计算过程可视化</strong></h4><p>假设当前 <code>w_0</code> 和梯度如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w_0 = tensor([w1, w2, w3, w4], requires_grad=<span class="literal">True</span>)  <span class="comment"># 实际值可能是 [0.1, -0.2, 0.05, 0.3]</span></span><br><span class="line">grad = tensor([dw1, dw2, dw3, dw4])                <span class="comment"># 例如 [1.2, 0.8, -0.5, 2.1]</span></span><br></pre></td></tr></table></figure></p>
+<p>参数更新操作：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">w_0 -= lr * w_0.grad</span><br><span class="line"><span class="comment"># 等价于：</span></span><br><span class="line">w1_new = w1 - lr * dw1</span><br><span class="line">w2_new = w2 - lr * dw2</span><br><span class="line">w3_new = w3 - lr * dw3</span><br><span class="line">w4_new = w4 - lr * dw4</span><br></pre></td></tr></table></figure></p>
 <hr>
-<h4 id="3-数学推导验证"><a href="#3-数学推导验证" class="headerlink" title="3. 数学推导验证"></a><strong>3. 数学推导验证</strong></h4><p>假设模型为：<br>$$<br>\hat{y} &#x3D; X \cdot w + b<br>$$<br>损失函数为MAE：<br>$$<br>\mathcal{L} &#x3D; \frac{1}{N} \sum |\hat{y} - y|<br>$$</p>
-<p>对 $w_j$ 的梯度为：<br>$$<br>\frac{\partial \mathcal{L}}{\partial w_j} &#x3D; \frac{1}{N} \sum \text{sign}(\hat{y}-y) \cdot X_{[:,j]}<br>$$</p>
-<p>PyTorch会自动计算每个 $w_j$ 对应的梯度分量，并拼合成形状为 <code>(4,)</code> 的梯度张量。</p>
+<h4 id="3-数学推导验证"><a href="#3-数学推导验证" class="headerlink" title="3. 数学推导验证"></a><strong>3. 数学推导验证</strong></h4><p>假设模型为：</p>
+<script type="math/tex; mode=display">
+\hat{y} = X \cdot w + b</script><p>损失函数为MAE：</p>
+<script type="math/tex; mode=display">
+\mathcal{L} = \frac{1}{N} \sum |\hat{y} - y|</script><p>对 $w_j$ 的梯度为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \mathcal{L}}{\partial w_j} = \frac{1}{N} \sum \text{sign}(\hat{y}-y) \cdot X_{[:,j]}</script><p>PyTorch会自动计算每个 $w_j$ 对应的梯度分量，并拼合成形状为 <code>(4,)</code> 的梯度张量。</p>
 <hr>
-<h4 id="4-代码执行细节验证"><a href="#4-代码执行细节验证" class="headerlink" title="4. 代码执行细节验证"></a><strong>4. 代码执行细节验证</strong></h4><p>在你的代码中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):</span><br><span class="line">    pred_y = torch.matmul(x, w) + b  <span class="comment"># x形状(batch_size,4), w形状(4,)</span></span><br><span class="line">    <span class="keyword">return</span> pred_y                    <span class="comment"># 输出形状(batch_size,)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):</span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)  <span class="comment"># 输出是标量</span></span><br></pre></td></tr></table></figure>
-
+<h4 id="4-代码执行细节验证"><a href="#4-代码执行细节验证" class="headerlink" title="4. 代码执行细节验证"></a><strong>4. 代码执行细节验证</strong></h4><p>在你的代码中：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):</span><br><span class="line">    pred_y = torch.matmul(x, w) + b  <span class="comment"># x形状(batch_size,4), w形状(4,)</span></span><br><span class="line">    <span class="keyword">return</span> pred_y                    <span class="comment"># 输出形状(batch_size,)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):</span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)  <span class="comment"># 输出是标量</span></span><br></pre></td></tr></table></figure></p>
 <p>反向传播时：</p>
 <ol>
 <li><code>loss</code> 是标量（关键！）</li>
@@ -365,11 +348,10 @@
 <li>所有梯度按原始维度组织，存储在 <code>w_0.grad</code></li>
 </ol>
 <hr>
-<h4 id="5-梯度形状验证实验"><a href="#5-梯度形状验证实验" class="headerlink" title="5. 梯度形状验证实验"></a><strong>5. 梯度形状验证实验</strong></h4><p>可以添加调试代码验证梯度形状：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(w_0.shape)        <span class="comment"># 输出: torch.Size([4])</span></span><br><span class="line"><span class="built_in">print</span>(w_0.grad.shape)   <span class="comment"># 反向传播后会输出: torch.Size([4])</span></span><br></pre></td></tr></table></figure>
-
+<h4 id="5-梯度形状验证实验"><a href="#5-梯度形状验证实验" class="headerlink" title="5. 梯度形状验证实验"></a><strong>5. 梯度形状验证实验</strong></h4><p>可以添加调试代码验证梯度形状：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(w_0.shape)        <span class="comment"># 输出: torch.Size([4])</span></span><br><span class="line"><span class="built_in">print</span>(w_0.grad.shape)   <span class="comment"># 反向传播后会输出: torch.Size([4])</span></span><br></pre></td></tr></table></figure></p>
 <hr>
-<h4 id="6-与一维情况的对比"><a href="#6-与一维情况的对比" class="headerlink" title="6. 与一维情况的对比"></a><strong>6. 与一维情况的对比</strong></h4><table>
+<h4 id="6-与一维情况的对比"><a href="#6-与一维情况的对比" class="headerlink" title="6. 与一维情况的对比"></a><strong>6. 与一维情况的对比</strong></h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>参数类型</th>
@@ -378,7 +360,8 @@
 <th>更新方式</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>标量</td>
 <td>()</td>
 <td>()</td>
@@ -396,7 +379,9 @@
 <td>(3,4)</td>
 <td>每个矩阵元素独立更新</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h4 id="为什么没有维度冲突？"><a href="#为什么没有维度冲突？" class="headerlink" title="为什么没有维度冲突？"></a><strong>为什么没有维度冲突？</strong></h4><ul>
 <li><strong>关键点</strong>：损失函数最终输出始终是 <strong>标量</strong>（<code>maeLoss</code> 返回的是平均值）</li>
@@ -413,7 +398,8 @@
 </ul>
 <h1 id="matplotlib-pyplot"><a href="#matplotlib-pyplot" class="headerlink" title="matplotlib.pyplot"></a>matplotlib.pyplot</h1><h2 id="plt-plot"><a href="#plt-plot" class="headerlink" title="plt.plot()"></a>plt.plot()</h2><p>在使用 PyTorch 进行深度学习训练时，如果要将张量数据传递给 <code>matplotlib.pyplot.plot()</code> 进行可视化，通常需要添加 <code>.detach().numpy()</code> 操作。这是由 PyTorch 张量和 Matplotlib 的底层机制差异导致的，具体原因如下：</p>
 <hr>
-<h3 id="1-核心原因：数据格式转换"><a href="#1-核心原因：数据格式转换" class="headerlink" title="1. 核心原因：数据格式转换"></a><strong>1. 核心原因：数据格式转换</strong></h3><table>
+<h3 id="1-核心原因：数据格式转换"><a href="#1-核心原因：数据格式转换" class="headerlink" title="1. 核心原因：数据格式转换"></a><strong>1. 核心原因：数据格式转换</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>操作步骤</th>
@@ -421,7 +407,8 @@
 <th>必要性</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>.detach()</code></td>
 <td>将张量从计算图中分离，得到一个不需要梯度追踪的新张量</td>
 <td>必要</td>
@@ -431,7 +418,9 @@
 <td>将 PyTorch 张量转换为 NumPy 数组（Matplotlib 只能处理 NumPy 数组或 Python 原生数据类型）</td>
 <td>必要</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="2-分步详解"><a href="#2-分步详解" class="headerlink" title="2. 分步详解"></a><strong>2. 分步详解</strong></h3><h4 id="（1）脱离计算图（-detach-）"><a href="#（1）脱离计算图（-detach-）" class="headerlink" title="（1）脱离计算图（.detach()）"></a><strong>（1）脱离计算图（.detach()）</strong></h4><ul>
 <li><strong>问题背景</strong>：PyTorch 张量可能带有梯度信息（<code>requires_grad=True</code>）</li>
@@ -440,21 +429,25 @@
 <li>可能引发意外的梯度传播（尽管绘图操作不需要梯度）</li>
 </ul>
 </li>
-<li><strong>示例对比</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始张量（带梯度）</span></span><br><span class="line">tensor_with_grad = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接转换会报错</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    plt.plot(tensor_with_grad)  <span class="comment"># ❌ 报错：Can&#x27;t call numpy() on Tensor that requires grad</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确做法</span></span><br><span class="line">plt.plot(tensor_with_grad.detach().numpy())  <span class="comment"># ✅ 正常工作</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>示例对比</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始张量（带梯度）</span></span><br><span class="line">tensor_with_grad = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], requires_grad=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接转换会报错</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    plt.plot(tensor_with_grad)  <span class="comment"># ❌ 报错：Can&#x27;t call numpy() on Tensor that requires grad</span></span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确做法</span></span><br><span class="line">plt.plot(tensor_with_grad.detach().numpy())  <span class="comment"># ✅ 正常工作</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="（2）设备转移（CPU-GPU）"><a href="#（2）设备转移（CPU-GPU）" class="headerlink" title="（2）设备转移（CPU&#x2F;GPU）"></a><strong>（2）设备转移（CPU&#x2F;GPU）</strong></h4><ul>
+<h4 id="（2）设备转移（CPU-GPU）"><a href="#（2）设备转移（CPU-GPU）" class="headerlink" title="（2）设备转移（CPU/GPU）"></a><strong>（2）设备转移（CPU/GPU）</strong></h4><ul>
 <li><strong>问题背景</strong>：如果张量在 GPU 上（<code>device=&#39;cuda&#39;</code>）</li>
 <li><strong>风险</strong>：Matplotlib 无法直接处理 GPU 上的张量</li>
-<li><strong>完整转换流程</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GPU 张量处理流程</span></span><br><span class="line">gpu_tensor = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 错误方式</span></span><br><span class="line">plt.plot(gpu_tensor.cpu().detach().numpy())  <span class="comment"># ❌ 顺序错误，应先 detach</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确方式</span></span><br><span class="line">plt.plot(gpu_tensor.detach().cpu().numpy())  <span class="comment"># ✅ 正确顺序：detach → cpu → numpy</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>完整转换流程</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GPU 张量处理流程</span></span><br><span class="line">gpu_tensor = torch.tensor([<span class="number">1.0</span>, <span class="number">2.0</span>], device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 错误方式</span></span><br><span class="line">plt.plot(gpu_tensor.cpu().detach().numpy())  <span class="comment"># ❌ 顺序错误，应先 detach</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 正确方式</span></span><br><span class="line">plt.plot(gpu_tensor.detach().cpu().numpy())  <span class="comment"># ✅ 正确顺序：detach → cpu → numpy</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="（3）数据类型转换"><a href="#（3）数据类型转换" class="headerlink" title="（3）数据类型转换"></a><strong>（3）数据类型转换</strong></h4><table>
+<h4 id="（3）数据类型转换"><a href="#（3）数据类型转换" class="headerlink" title="（3）数据类型转换"></a><strong>（3）数据类型转换</strong></h4><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>数据类型</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>PyTorch Tensor</td>
 <td>可以是任意形状和数据类型（float32, int64 等）</td>
 </tr>
@@ -462,19 +455,18 @@
 <td>NumPy Array</td>
 <td>Matplotlib 的底层数据容器，与 PyTorch 内存不兼容</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
 <h3 id="3-完整转换流程"><a href="#3-完整转换流程" class="headerlink" title="3. 完整转换流程"></a><strong>3. 完整转换流程</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设有一个需要绘制的 PyTorch 张量</span></span><br><span class="line">original_tensor = torch.randn(<span class="number">100</span>, requires_grad=<span class="literal">True</span>, device=<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安全转换步骤</span></span><br><span class="line">plot_data = original_tensor.detach()  <span class="comment"># 1. 脱离计算图</span></span><br><span class="line">                .cpu()                <span class="comment"># 2. 转移到 CPU（如果是 GPU 张量）</span></span><br><span class="line">                .numpy()              <span class="comment"># 3. 转换为 NumPy 数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘制图形</span></span><br><span class="line">plt.plot(plot_data)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
 <hr>
 <h3 id="4-常见错误场景"><a href="#4-常见错误场景" class="headerlink" title="4. 常见错误场景"></a><strong>4. 常见错误场景</strong></h3><h4 id="场景-1：未分离计算图"><a href="#场景-1：未分离计算图" class="headerlink" title="场景 1：未分离计算图"></a><strong>场景 1：未分离计算图</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = torch.linspace(<span class="number">0</span>, <span class="number">2</span>*np.pi, <span class="number">100</span>, requires_grad=<span class="literal">True</span>)</span><br><span class="line">y = torch.sin(x)</span><br><span class="line"></span><br><span class="line">plt.plot(x.numpy(), y.numpy())  <span class="comment"># ❌ RuntimeError: Can&#x27;t call numpy() on Tensor that requires grad</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="场景-2：未处理-GPU-张量"><a href="#场景-2：未处理-GPU-张量" class="headerlink" title="场景 2：未处理 GPU 张量"></a><strong>场景 2：未处理 GPU 张量</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gpu_data = torch.randn(<span class="number">10</span>).cuda()</span><br><span class="line">plt.plot(gpu_data.detach().numpy())  <span class="comment"># ❌ TypeError: can&#x27;t convert cuda:0 device type tensor to numpy</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="场景-3：错误操作顺序"><a href="#场景-3：错误操作顺序" class="headerlink" title="场景 3：错误操作顺序"></a><strong>场景 3：错误操作顺序</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先转 NumPy 再 detach 会丢失梯度信息</span></span><br><span class="line">temp = y.numpy()         <span class="comment"># ❌ 错误开始点</span></span><br><span class="line">detached = temp.detach() <span class="comment"># ❌ AttributeError: &#x27;numpy.ndarray&#x27; object has no attribute &#x27;detach&#x27;</span></span><br></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="5-最佳实践总结"><a href="#5-最佳实践总结" class="headerlink" title="5. 最佳实践总结"></a><strong>5. 最佳实践总结</strong></h3><table>
+<h3 id="5-最佳实践总结"><a href="#5-最佳实践总结" class="headerlink" title="5. 最佳实践总结"></a><strong>5. 最佳实践总结</strong></h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>操作类型</th>
@@ -482,7 +474,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>CPU + 无梯度</td>
 <td><code>tensor.numpy()</code></td>
 <td>直接转换</td>
@@ -502,14 +495,12 @@
 <td><code>tensor.detach().cpu().numpy()</code></td>
 <td>完整流程</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <hr>
-<h3 id="6-特殊场景处理"><a href="#6-特殊场景处理" class="headerlink" title="6. 特殊场景处理"></a><strong>6. 特殊场景处理</strong></h3><h4 id="保留梯度但需要可视化"><a href="#保留梯度但需要可视化" class="headerlink" title="保留梯度但需要可视化"></a><strong>保留梯度但需要可视化</strong></h4><p>如果需要在可视化后继续梯度计算（罕见需求）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 with torch.no_grad(): 临时禁用梯度</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    plt.plot(x.cpu().numpy(), y.cpu().numpy())</span><br></pre></td></tr></table></figure>
-
-<h4 id="批量处理张量"><a href="#批量处理张量" class="headerlink" title="批量处理张量"></a><strong>批量处理张量</strong></h4><p>对于高维张量（如神经网络中间层输出）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设 feature_map 是 4D 张量 (batch, channel, height, width)</span></span><br><span class="line">feature_map = model(inputs)</span><br><span class="line">plt.imshow(feature_map[<span class="number">0</span>, <span class="number">0</span>].detach().cpu().numpy())  <span class="comment"># 可视化第一个样本的第一个通道</span></span><br></pre></td></tr></table></figure>
-
+<h3 id="6-特殊场景处理"><a href="#6-特殊场景处理" class="headerlink" title="6. 特殊场景处理"></a><strong>6. 特殊场景处理</strong></h3><h4 id="保留梯度但需要可视化"><a href="#保留梯度但需要可视化" class="headerlink" title="保留梯度但需要可视化"></a><strong>保留梯度但需要可视化</strong></h4><p>如果需要在可视化后继续梯度计算（罕见需求）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 with torch.no_grad(): 临时禁用梯度</span></span><br><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br><span class="line">    plt.plot(x.cpu().numpy(), y.cpu().numpy())</span><br></pre></td></tr></table></figure></p>
+<h4 id="批量处理张量"><a href="#批量处理张量" class="headerlink" title="批量处理张量"></a><strong>批量处理张量</strong></h4><p>对于高维张量（如神经网络中间层输出）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设 feature_map 是 4D 张量 (batch, channel, height, width)</span></span><br><span class="line">feature_map = model(inputs)</span><br><span class="line">plt.imshow(feature_map[<span class="number">0</span>, <span class="number">0</span>].detach().cpu().numpy())  <span class="comment"># 可视化第一个样本的第一个通道</span></span><br></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p><code>.detach().numpy()</code>（对于 GPU 张量还需 <code>.cpu()</code>）的组合操作是 PyTorch 与 Matplotlib 协作的 <strong>必要桥梁</strong>，其主要作用包括：</p>
 <ol>
