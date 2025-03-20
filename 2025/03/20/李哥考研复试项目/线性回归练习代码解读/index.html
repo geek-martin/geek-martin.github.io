@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-mw.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/mw-icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/mw-icon.ico">
+  <link rel="mask-icon" href="/images/logo_mw.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="part.1 函数定义 create_data()12345678def create_data(w, b, data_num):    x &#x3D; torch.normal(0, 1, (data_num, len(w)))      y &#x3D; torch.matmul(x, w) + b        noise &#x3D; torch.normal(0, 0.01, y.shape)      y +&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性回归练习代码解读">
+<meta property="og:url" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/index.html">
+<meta property="og:site_name" content="Martin&#39;s Space">
+<meta property="og:description" content="part.1 函数定义 create_data()12345678def create_data(w, b, data_num):    x &#x3D; torch.normal(0, 1, (data_num, len(w)))      y &#x3D; torch.matmul(x, w) + b        noise &#x3D; torch.normal(0, 0.01, y.shape)      y +&#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319232552.png">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319234616.png">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/06ec95ff3c17534440c17f2c5081b49.png">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/0b0fcf44d3b47e8a5e9e12faccd42bc.png">
+<meta property="og:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/607dc97725be3eecbb191ed4887eadb.png">
+<meta property="article:published_time" content="2025-03-20T04:02:36.625Z">
+<meta property="article:modified_time" content="2025-03-20T05:03:14.953Z">
+<meta property="article:author" content="Martin William">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="计算机考研复试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319232552.png">
+
+<link rel="canonical" href="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>线性回归练习代码解读 | Martin's Space</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Martin's Space</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A geek is also an accountant.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/geek-martin" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Martin William">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Martin's Space">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          线性回归练习代码解读
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2025-03-20 12:02:36 / Modified: 13:03:14" itemprop="dateCreated datePublished" datetime="2025-03-20T12:02:36+08:00">2025-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">李哥考研复试项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="part-1-函数定义-create-data"><a href="#part-1-函数定义-create-data" class="headerlink" title="part.1 函数定义 create_data()"></a>part.1 函数定义 create_data()</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_data</span>(<span class="params">w, b, data_num</span>):</span><br><span class="line">    x = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (data_num, <span class="built_in">len</span>(w)))  </span><br><span class="line">    y = torch.matmul(x, w) + b  </span><br><span class="line">  </span><br><span class="line">    noise = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)  </span><br><span class="line">    y += noise  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> x, y</span><br></pre></td></tr></table></figure>
+
+<p>定义了一个create_data函数，用于生成数据。</p>
+<p>torch.normal: <a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.normal.html">docs</a></p>
+<p>torch.matmul: Matrix product of two tensors.</p>
+<p>x : 以0为均值，1为标准差，【(data_num)*(w长度)】的tensor数据<br>y : x*w + b 并在此基础上附加了noise扰动</p>
+<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319232552.png"></p>
+<h1 id="part-2-变量赋值"><a href="#part-2-变量赋值" class="headerlink" title="part.2 变量赋值"></a>part.2 变量赋值</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">500</span>  </span><br><span class="line">  </span><br><span class="line">true_w = torch.tensor([<span class="number">10.0</span>, <span class="number">7.0</span>, <span class="number">5.0</span>, <span class="number">2.0</span>])  </span><br><span class="line">true_b = torch.tensor(<span class="number">1.1</span>)</span><br><span class="line"></span><br><span class="line">X, Y = create_data(true_w, true_b, num)</span><br></pre></td></tr></table></figure>
+
+<p>定义了本实验的真实值和实验规模，并调用create_data函数生成了实验数据。<br>true_w: 4*1 true_b: 1<br>X: 500*4 Y：500*1<br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/Pastedimage20250319234616.png"></p>
+<h1 id="part-3-main函数"><a href="#part-3-main函数" class="headerlink" title="part.3 main函数"></a>part.3 main函数</h1><p>跳过函数定义看代码主体部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lr = <span class="number">0.05</span>  </span><br><span class="line">  </span><br><span class="line">w_0 = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, true_w.shape, requires_grad=<span class="literal">True</span>)  </span><br><span class="line">b_0 = torch.tensor(<span class="number">0.01</span>, requires_grad=<span class="literal">True</span>)   </span><br><span class="line">  </span><br><span class="line">epochs = <span class="number">50</span></span><br></pre></td></tr></table></figure>
+
+<p>lr: 超参数，学习率<br>w_0, b_0：初始值<br>	requires_grad &#x3D; True：A tensor can be created with requires_grad&#x3D;True so that torch.autograd records operations on them for automatic differentiation.<br>	Each tensor has an associated torch.Storage, which holds its data.<br>epochs: 定义了执行梯度下降算法的轮数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):  </span><br><span class="line">    data_loss = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> batch_x, batch_y <span class="keyword">in</span> data_provider(X, Y, batchsize):  </span><br><span class="line">        pred_y = fun(batch_x, w_0, b_0)  </span><br><span class="line">        loss = maeLoss(pred_y, batch_y)  </span><br><span class="line">        loss.backward()  </span><br><span class="line">        sgd([w_0, b_0], lr)  </span><br><span class="line">        data_loss += loss  </span><br><span class="line">  </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;epoch %03d: loss: %.6f&quot;</span>%(epoch, data_loss))  </span><br><span class="line">  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;真实的函数值是&quot;</span>, true_w, true_b)  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;深度学习得到的函数值是&quot;</span>, w_0, b_0)</span><br></pre></td></tr></table></figure>
+<p>from 66 to 78<br>data_loss变量：统计每一轮深度学习的效果<br>torch.backward():<a href="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/" title="深度学习python库">深度学习python库</a><br>当调用 <code>loss.backward()</code> 时：</p>
+<ul>
+<li>系统会计算损失值对 <code>w_0</code> 的 <strong>每个元素</strong> 的偏导数</li>
+<li>最终 <code>w_0.grad</code> 也会是一个形状为 <code>(4,)</code> 的张量</li>
+</ul>
+<h1 id="part-4-函数定义"><a href="#part-4-函数定义" class="headerlink" title="part.4 函数定义"></a>part.4 函数定义</h1><h2 id="data-provider-函数"><a href="#data-provider-函数" class="headerlink" title="data_provider()函数"></a>data_provider()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):  </span><br><span class="line">    length = <span class="built_in">len</span>(label)  </span><br><span class="line">    indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  </span><br><span class="line">    random.shuffle(indices)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):  </span><br><span class="line">        get_indices = indices[each: each + batchsize]  </span><br><span class="line">        get_data = data[get_indices]  </span><br><span class="line">        get_label = label[get_indices]  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">yield</span> get_data, get_label  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">batchsize = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p>from 26 to 36<br>以下是 <code>data_provider()</code> 函数的逐行代码解读：</p>
+<hr>
+<h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a><strong>函数定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_provider</span>(<span class="params">data, label, batchsize</span>):</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>输入参数</strong>：<ul>
+<li><code>data</code>: 特征数据张量（形状通常为 <code>[样本数, 特征维度]</code>）</li>
+<li><code>label</code>: 标签数据张量（形状为 <code>[样本数]</code>）</li>
+<li><code>batchsize</code>: 每个批次的样本数量</li>
+</ul>
+</li>
+<li><strong>功能</strong>：生成随机小批量（mini-batch）数据</li>
+</ul>
+<hr>
+<h3 id="步骤分解"><a href="#步骤分解" class="headerlink" title="步骤分解"></a><strong>步骤分解</strong></h3><h4 id="1-获取数据集长度"><a href="#1-获取数据集长度" class="headerlink" title="1. 获取数据集长度"></a><strong>1. 获取数据集长度</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length = <span class="built_in">len</span>(label)  <span class="comment"># 获取总样本数（假设数据与标签一一对应）</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>关键作用：确定需要处理的总样本数量</li>
+<li>潜在风险：如果 <code>data</code> 和 <code>label</code> 长度不一致会引发错误，但代码未做检查</li>
+</ul>
+<hr>
+<h4 id="2-创建索引列表"><a href="#2-创建索引列表" class="headerlink" title="2. 创建索引列表"></a><strong>2. 创建索引列表</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">indices = <span class="built_in">list</span>(<span class="built_in">range</span>(length))  <span class="comment"># 生成顺序索引 [0, 1, 2, ..., length-1]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>示例：当 <code>length=500</code> 时，生成 <code>[0,1,2,...,499]</code></li>
+<li>目的：为后续随机采样做准备</li>
+</ul>
+<hr>
+<h4 id="3-随机打乱索引"><a href="#3-随机打乱索引" class="headerlink" title="3. 随机打乱索引"></a><strong>3. 随机打乱索引</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">random.shuffle(indices)  <span class="comment"># 原地打乱索引顺序</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>重要性：<ul>
+<li>破坏数据原始顺序，防止模型学习到顺序特征</li>
+<li>每个epoch会生成不同的批次组合</li>
+</ul>
+</li>
+<li>示例：可能变为 <code>[253, 12, 487, ..., 76]</code></li>
+</ul>
+<hr>
+<h4 id="4-批次循环生成"><a href="#4-批次循环生成" class="headerlink" title="4. 批次循环生成"></a><strong>4. 批次循环生成</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, length, batchsize):</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>循环机制</strong>：<ul>
+<li><code>each</code> 从0开始，以 <code>batchsize</code> 为步长递增</li>
+<li>最后一个批次可能小于 <code>batchsize</code>（例如总样本500，batchsize&#x3D;16时，最后一批次有4个样本）</li>
+</ul>
+</li>
+<li><strong>可视化</strong>：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">batch1: 0-15</span><br><span class="line">batch2: 16-31</span><br><span class="line">...</span><br><span class="line">batch31: 496-500</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="5-获取当前批次索引"><a href="#5-获取当前批次索引" class="headerlink" title="5. 获取当前批次索引"></a><strong>5. 获取当前批次索引</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_indices = indices[each: each + batchsize]  <span class="comment"># 切片获取当前批次索引</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>示例：当 <code>each=32</code>, <code>batchsize=16</code> 时，获取索引 <code>indices[32:48]</code></li>
+<li>注意：对列表进行切片时，超出范围不会报错（自动取到列表末尾）</li>
+</ul>
+<hr>
+<h4 id="6-提取批次数据"><a href="#6-提取批次数据" class="headerlink" title="6. 提取批次数据"></a><strong>6. 提取批次数据</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">get_data = data[get_indices]    <span class="comment"># 按索引提取特征数据</span></span><br><span class="line">get_label = label[get_indices]  <span class="comment"># 按索引提取对应标签</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>张量索引特性</strong>：<ul>
+<li>支持通过索引列表进行高级索引（advanced indexing）</li>
+<li>要求 <code>data</code> 和 <code>label</code> 的第一个维度必须与 <code>length</code> 一致</li>
+</ul>
+</li>
+<li><strong>输出形状</strong>：<ul>
+<li><code>get_data</code>: <code>[当前批次大小, 特征维度]</code></li>
+<li><code>get_label</code>: <code>[当前批次大小]</code></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="7-生成数据批次"><a href="#7-生成数据批次" class="headerlink" title="7. 生成数据批次"></a><strong>7. 生成数据批次</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">yield</span> get_data, get_label  <span class="comment"># 返回生成器对象</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>生成器优势</strong>：<ul>
+<li>惰性加载：不会一次性将所有批次加载到内存</li>
+<li>内存效率：适合处理大型数据集</li>
+</ul>
+</li>
+<li><strong>使用场景</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在训练循环中使用</span></span><br><span class="line"><span class="keyword">for</span> batch_data, batch_label <span class="keyword">in</span> data_provider(X, Y, <span class="number">16</span>):</span><br><span class="line">    <span class="comment"># 执行训练步骤</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="关键特性总结"><a href="#关键特性总结" class="headerlink" title="关键特性总结"></a><strong>关键特性总结</strong></h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+<th>重要性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>随机打乱</td>
+<td>每个epoch重新洗牌数据顺序</td>
+<td>防止模型记住样本顺序</td>
+</tr>
+<tr>
+<td>动态批次生成</td>
+<td>使用生成器逐批产生数据</td>
+<td>节省内存，支持大数据集</td>
+</tr>
+<tr>
+<td>不完整批次处理</td>
+<td>自动处理末尾不完整批次</td>
+<td>保证数据利用率100%</td>
+</tr>
+<tr>
+<td>通用索引机制</td>
+<td>适用于任何支持高级索引的数据结构</td>
+<td>兼容NumPy&#x2F;PyTorch等张量</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="执行流程示意图"><a href="#执行流程示意图" class="headerlink" title="执行流程示意图"></a><strong>执行流程示意图</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">原始数据</span><br><span class="line">  │</span><br><span class="line">  ├─ 创建顺序索引 [0,1,2,...]</span><br><span class="line">  │</span><br><span class="line">  └─ 随机洗牌 → [253,12,487,...]</span><br><span class="line">            │</span><br><span class="line">            ├─ 切片[0:16] → batch1</span><br><span class="line">            ├─ 切片[16:32] → batch2</span><br><span class="line">            │</span><br><span class="line">            └─ ... → 直到遍历所有数据</span><br></pre></td></tr></table></figure>
+
+<p>该函数实现了深度学习训练中最基础且重要的 <strong>随机小批量采样</strong> 功能，是确保模型有效训练的关键组件。</p>
+<h2 id="fun-函数"><a href="#fun-函数" class="headerlink" title="fun()函数"></a>fun()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">x, w, b</span>):  </span><br><span class="line">    pred_y = torch.matmul(x, w) + b  </span><br><span class="line">    <span class="keyword">return</span> pred_y</span><br></pre></td></tr></table></figure>
+<p>根据给定的参数w, b对数据x生成预测值y并返回预测值pred_y</p>
+<h2 id="maeLoss-函数"><a href="#maeLoss-函数" class="headerlink" title="maeLoss()函数"></a>maeLoss()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">maeLoss</span>(<span class="params">pred_y, y</span>):  </span><br><span class="line">    <span class="keyword">return</span> torch.<span class="built_in">sum</span>(<span class="built_in">abs</span>(pred_y-y))/<span class="built_in">len</span>(y)</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/06ec95ff3c17534440c17f2c5081b49.png"></p>
+<h2 id="sgd-函数"><a href="#sgd-函数" class="headerlink" title="sgd()函数"></a>sgd()函数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sgd</span>(<span class="params">paras, lr</span>):  </span><br><span class="line">    <span class="keyword">with</span> torch.no_grad():  </span><br><span class="line">        <span class="keyword">for</span> para <span class="keyword">in</span> paras:  </span><br><span class="line">            para -= para.grad * lr  </span><br><span class="line">            para.grad.zero_()</span><br></pre></td></tr></table></figure>
+<p>以下是 <code>sgd</code> 函数的详细执行过程分析：</p>
+<hr>
+<h3 id="sgd-函数执行步骤详解"><a href="#sgd-函数执行步骤详解" class="headerlink" title="sgd 函数执行步骤详解"></a><strong><code>sgd</code> 函数执行步骤详解</strong></h3><h4 id="1-进入无梯度计算模式"><a href="#1-进入无梯度计算模式" class="headerlink" title="1. 进入无梯度计算模式"></a><strong>1. 进入无梯度计算模式</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> torch.no_grad():</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>：禁用梯度跟踪，确保参数更新操作不会记录到计算图中。</li>
+<li><strong>必要性</strong>：参数更新是纯粹的数值操作，不需要梯度信息。禁用梯度跟踪可以：<ul>
+<li>避免不必要的内存占用（计算图不会被扩展）</li>
+<li>防止参数更新操作被错误地加入反向传播流程</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="2-遍历所有参数"><a href="#2-遍历所有参数" class="headerlink" title="2. 遍历所有参数"></a><strong>2. 遍历所有参数</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> para <span class="keyword">in</span> paras:  <span class="comment"># paras = [w_0, b_0]</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>参数类型</strong>：<code>para</code> 是 <code>requires_grad=True</code> 的叶子张量（如 <code>w_0</code> 和 <code>b_0</code>）</li>
+<li><strong>关键属性</strong>：每个 <code>para</code> 的梯度存储在 <code>para.grad</code> 中，由之前的 <code>loss.backward()</code> 计算得到</li>
+</ul>
+<hr>
+<h4 id="3-参数值更新"><a href="#3-参数值更新" class="headerlink" title="3. 参数值更新"></a><strong>3. 参数值更新</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">para -= para.grad * lr  <span class="comment"># 等价于 para = para - lr * para.grad</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>数学意义</strong>：执行梯度下降更新<br>$$ \theta_{\text{new}} &#x3D; \theta_{\text{old}} - \eta \cdot \nabla_{\theta}\mathcal{L} $$</li>
+<li><strong>实现细节</strong>：<ul>
+<li>原地修改张量的值 (<code>para</code> 是直接操作对象)</li>
+<li>由于在 <code>no_grad()</code> 上下文中，此操作不会影响后续反向传播的计算图</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="4-梯度清零"><a href="#4-梯度清零" class="headerlink" title="4. 梯度清零"></a><strong>4. 梯度清零</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">para.grad.zero_()</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>必要性</strong>：<ul>
+<li>PyTorch 默认会累积梯度（梯度 +&#x3D; 新梯度）</li>
+<li>必须显式清零，否则下一个 batch 的梯度会与当前梯度错误叠加</li>
+</ul>
+</li>
+<li><strong>方法</strong>：调用 <code>zero_()</code> 原地清零梯度张量</li>
+</ul>
+<hr>
+<h3 id="执行时序示例"><a href="#执行时序示例" class="headerlink" title="执行时序示例"></a><strong>执行时序示例</strong></h3><p>假设当前 batch 的梯度已计算完成（<code>loss.backward()</code> 后）：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>参数值 <code>w_0</code></th>
+<th>梯度 <code>w_0.grad</code></th>
+<th>学习率 <code>lr</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>初始</td>
+<td>0.5</td>
+<td>2.0</td>
+<td>0.05</td>
+</tr>
+<tr>
+<td>更新</td>
+<td>0.5 - 0.05*2.0 &#x3D; 0.4</td>
+<td>2.0 → 0.0 (清零后)</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="与标准实现的差异"><a href="#与标准实现的差异" class="headerlink" title="与标准实现的差异"></a><strong>与标准实现的差异</strong></h3><ol>
+<li><p><strong>手动更新 vs 优化器</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 标准 PyTorch 方式（等效实现）</span></span><br><span class="line">optimizer = torch.optim.SGD([w_0, b_0], lr=lr)</span><br><span class="line">optimizer.step()</span><br><span class="line">optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户代码手动实现了优化器的核心逻辑</li>
+</ul>
+</li>
+<li><p><strong>梯度清零时机</strong>：</p>
+<ul>
+<li>用户代码在每个 <strong>batch</strong> 更新后立即清零梯度（正确）</li>
+<li>错误做法：在 epoch 结束后才清零（会导致梯度跨 batch 累积）</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="潜在问题与改进"><a href="#潜在问题与改进" class="headerlink" title="潜在问题与改进"></a><strong>潜在问题与改进</strong></h3><ol>
+<li><p><strong>梯度爆炸风险</strong>：</p>
+<ul>
+<li>如果学习率 (<code>lr</code>) 过大，可能导致参数更新幅度过大</li>
+<li>改进方案：添加梯度裁剪 (<code>torch.nn.utils.clip_grad_norm_</code>)</li>
+</ul>
+</li>
+<li><p><strong>更复杂的优化器</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加动量（需修改 sgd 函数）</span></span><br><span class="line">velocity = <span class="number">0</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sgd_momentum</span>(<span class="params">para, lr, momentum=<span class="number">0.9</span></span>):</span><br><span class="line">    velocity = momentum * velocity - lr * para.grad</span><br><span class="line">    para += velocity</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h3 id="关键总结"><a href="#关键总结" class="headerlink" title="关键总结"></a><strong>关键总结</strong></h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>作用</th>
+<th>必要性等级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>torch.no_grad()</code></td>
+<td>防止参数更新污染计算图</td>
+<td>必要</td>
+</tr>
+<tr>
+<td><code>para -= grad*lr</code></td>
+<td>执行梯度下降参数更新</td>
+<td>核心操作</td>
+</tr>
+<tr>
+<td><code>grad.zero_()</code></td>
+<td>防止梯度跨 batch 累积</td>
+<td>必要</td>
+</tr>
+</tbody></table>
+<p>通过这种手动实现的 SGD，开发者可以更直观地理解优化器底层的工作原理，但在实际项目中建议使用 PyTorch 内置优化器以获得更好的性能和稳定性。</p>
+<h3 id="图示"><a href="#图示" class="headerlink" title="图示"></a>图示</h3><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/5a6c5073a5cd2f4a2e6f7ca2e39dc5f.png"><br><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/0b0fcf44d3b47e8a5e9e12faccd42bc.png"></p>
+<h1 id="深度学习的训练过程"><a href="#深度学习的训练过程" class="headerlink" title="深度学习的训练过程"></a>深度学习的训练过程</h1><p><img src="/2025/03/20/%E6%9D%8E%E5%93%A5%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95%E9%A1%B9%E7%9B%AE/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E7%BB%83%E4%B9%A0%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB/607dc97725be3eecbb191ed4887eadb.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%80%83%E7%A0%94%E5%A4%8D%E8%AF%95/" rel="tag"># 计算机考研复试</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/03/20/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0python%E5%BA%93/" rel="prev" title="深度学习python库">
+      <i class="fa fa-chevron-left"></i> 深度学习python库
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#part-1-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89-create-data"><span class="nav-number">1.</span> <span class="nav-text">part.1 函数定义 create_data()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-2-%E5%8F%98%E9%87%8F%E8%B5%8B%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">part.2 变量赋值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-3-main%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">part.3 main函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#part-4-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">4.</span> <span class="nav-text">part.4 函数定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#data-provider-%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">data_provider()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89"><span class="nav-number">4.1.1.</span> <span class="nav-text">函数定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4%E5%88%86%E8%A7%A3"><span class="nav-number">4.1.2.</span> <span class="nav-text">步骤分解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86%E9%95%BF%E5%BA%A6"><span class="nav-number">4.1.2.1.</span> <span class="nav-text">1. 获取数据集长度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E5%88%97%E8%A1%A8"><span class="nav-number">4.1.2.2.</span> <span class="nav-text">2. 创建索引列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%9A%8F%E6%9C%BA%E6%89%93%E4%B9%B1%E7%B4%A2%E5%BC%95"><span class="nav-number">4.1.2.3.</span> <span class="nav-text">3. 随机打乱索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%89%B9%E6%AC%A1%E5%BE%AA%E7%8E%AF%E7%94%9F%E6%88%90"><span class="nav-number">4.1.2.4.</span> <span class="nav-text">4. 批次循环生成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E6%89%B9%E6%AC%A1%E7%B4%A2%E5%BC%95"><span class="nav-number">4.1.2.5.</span> <span class="nav-text">5. 获取当前批次索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E6%8F%90%E5%8F%96%E6%89%B9%E6%AC%A1%E6%95%B0%E6%8D%AE"><span class="nav-number">4.1.2.6.</span> <span class="nav-text">6. 提取批次数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E6%89%B9%E6%AC%A1"><span class="nav-number">4.1.2.7.</span> <span class="nav-text">7. 生成数据批次</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%E6%80%BB%E7%BB%93"><span class="nav-number">4.1.3.</span> <span class="nav-text">关键特性总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E7%A4%BA%E6%84%8F%E5%9B%BE"><span class="nav-number">4.1.4.</span> <span class="nav-text">执行流程示意图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fun-%E5%87%BD%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">fun()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maeLoss-%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">maeLoss()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sgd-%E5%87%BD%E6%95%B0"><span class="nav-number">4.4.</span> <span class="nav-text">sgd()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sgd-%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E6%AD%A5%E9%AA%A4%E8%AF%A6%E8%A7%A3"><span class="nav-number">4.4.1.</span> <span class="nav-text">sgd 函数执行步骤详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%BF%9B%E5%85%A5%E6%97%A0%E6%A2%AF%E5%BA%A6%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.4.1.1.</span> <span class="nav-text">1. 进入无梯度计算模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%81%8D%E5%8E%86%E6%89%80%E6%9C%89%E5%8F%82%E6%95%B0"><span class="nav-number">4.4.1.2.</span> <span class="nav-text">2. 遍历所有参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8F%82%E6%95%B0%E5%80%BC%E6%9B%B4%E6%96%B0"><span class="nav-number">4.4.1.3.</span> <span class="nav-text">3. 参数值更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%A2%AF%E5%BA%A6%E6%B8%85%E9%9B%B6"><span class="nav-number">4.4.1.4.</span> <span class="nav-text">4. 梯度清零</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%97%B6%E5%BA%8F%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.4.2.</span> <span class="nav-text">执行时序示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E6%A0%87%E5%87%86%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">4.4.3.</span> <span class="nav-text">与标准实现的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BD%9C%E5%9C%A8%E9%97%AE%E9%A2%98%E4%B8%8E%E6%94%B9%E8%BF%9B"><span class="nav-number">4.4.4.</span> <span class="nav-text">潜在问题与改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%80%BB%E7%BB%93"><span class="nav-number">4.4.5.</span> <span class="nav-text">关键总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BE%E7%A4%BA"><span class="nav-number">4.4.6.</span> <span class="nav-text">图示</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">深度学习的训练过程</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Martin William"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Martin William</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Martin William</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div><script color="0,0,255" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'Ov23liaTDt7Qq0JFudNS',
+      clientSecret: '078cf729d42801a641107eb2fdeb8e376287ec87',
+      repo        : 'geek-martin.github.io',
+      owner       : 'geek-martin',
+      admin       : ['geek-martin'],
+      id          : '5b8ca9667c67452795e5cb5d69b36e87',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
